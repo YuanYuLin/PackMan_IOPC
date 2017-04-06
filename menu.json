@@ -1,0 +1,18 @@
+{
+"DEBUG": false,
+"name": "packages",
+"packages": [
+{"enabled": 1, "name": "iopccfg_bdb"},
+{"enabled": 1, "name": "iopccmd"},
+{"enabled": 1, "name": "iopclauncher"},
+{"enabled": 1, "name": "iopcvm"},
+{"enabled": 1, "name": "libiopccmd_client"},
+{"enabled": 1, "name": "libiopccmd_system"},
+{"enabled": 1, "name": "libiopccommon"},
+{"enabled": 1, "name": "libiopctaskshell"},
+{"enabled": 1, "name": "libiopctasktimer"},
+{"enabled": 0, "name": ""}
+],
+"version": "1.0.0"
+}
+
