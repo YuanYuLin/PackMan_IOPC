@@ -5,7 +5,7 @@ def setLibPath():
     # append library path
     python_lib = os.path.abspath("pylib")
     sys.path.append(python_lib)
-    python_lib = os.path.abspath("pylib/iopc")
+    python_lib = os.path.abspath("pyiopc")
     sys.path.append(python_lib)
 
 def loadJson2Obj(path):
