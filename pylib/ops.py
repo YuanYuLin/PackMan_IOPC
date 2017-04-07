@@ -1,6 +1,11 @@
-import subprocess
+import json
 import os
-import sys
+import subprocess
+
+def appendCmd(cmd, raw_data):
+    for data in raw_data:
+        cmd.append(data)
+    return cmd
 
 def execCmd(cmd_list, work_dir, debug, proc_output=subprocess.PIPE):
     DEBUG = debug
@@ -30,25 +35,8 @@ def execCmd(cmd_list, work_dir, debug, proc_output=subprocess.PIPE):
 
     return response
 
-def clone(remote_repo_path):
-    CMD = ['git', 'clone', remote_repo_path]
-    return execCmd(CMD, ".", False, None)
-
-def pull(local_repo_path):
-    CMD = ['git', 'pull']
-    return execCmd(CMD, local_repo_path, False, None)
-
-def status(local_repo_path):
-    CMD = ['git', 'status']
-    return execCmd(CMD, local_repo_path, False, None)
-
-def commit(local_repo_path):
-    CMD = ['git', 'add', '.']
-    execCmd(CMD, local_repo_path, False, None)
-
-    CMD =  ['git', 'commit']
-    execCmd(CMD, local_repo_path, False, None)
-
-    CMD = ['git', 'push']
-    execCmd(CMD, local_repo_path, False, None)
+def loadJson2Obj(script):
+    with open(script) as fd:
+        data = json.load(fd)
+    return data
 

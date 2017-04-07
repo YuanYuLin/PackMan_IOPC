@@ -5,26 +5,28 @@ def setLibPath():
     # append library path
     python_lib = os.path.abspath("pylib")
     sys.path.append(python_lib)
+    python_lib = os.path.abspath("pylib/iopc")
+    sys.path.append(python_lib)
 
 def loadJson2Obj(path):
-    import iopc
-    return iopc.loadJson2Obj(path)
+    import ops
+    return ops.loadJson2Obj(path)
 
 def SyncMain(args):
-    import action_sync
-    action_sync.Main(args)
+    import iopc_sync
+    iopc_sync.Main(args)
 
 def BuildMain(args):
-    import action_build
-    action_build.Main(args)
+    import iopc_build
+    iopc_build.Main(args)
 
 def StatusMain(args):
-    import action_status
-    action_status.Main(args)
+    import iopc_status
+    iopc_status.Main(args)
 
 def CommitMain(args):
-    import action_commit
-    action_commit.Main(args)
+    import iopc_commit
+    iopc_commit.Main(args)
 
 def help():
     print "PackMan.py <menu file> <account file> <Action>"

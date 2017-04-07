@@ -1,4 +1,3 @@
-import json
 
 PACKAGE_CFG="/Package/CONFIG"
 def getAccount(obj):
@@ -32,9 +31,4 @@ def getSinglePackageName(obj):
         params = obj["params"]
         return params[1]
     return ""
-
-def loadJson2Obj(script):
-    with open(script) as fd:
-        data = json.load(fd)
-    return data
 

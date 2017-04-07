@@ -5,13 +5,13 @@ import os
 import subprocess
 import pprint
 import iopc
-import iopc_git
+import ops_git
 
-def CommitPackage(pkg_enabled, pkg_name, remote_repo_path, local_repo_path):
+def StatusPackage(pkg_enabled, pkg_name, remote_repo_path, local_repo_path):
     if pkg_enabled == 1:
         if(os.path.exists(local_repo_path)):
             print "GIT status " + pkg_name
-            iopc_git.commit(local_repo_path)
+            ops_git.status(local_repo_path)
             print "GIT status END"
 
 def Main(args):
@@ -28,7 +28,7 @@ def Main(args):
         remote_repo_path = account["URL"] + pkg_name
         if is_single_package:
             if single_package_name == pkg_name:
-                CommitPackage(pkg_enabled, pkg_name, remote_repo_path, local_repo_path)
+                StatusPackage(pkg_enabled, pkg_name, remote_repo_path, local_repo_path)
         else:
-            CommitPackage(pkg_enabled, pkg_name, remote_repo_path, local_repo_path)
+            StatusPackage(pkg_enabled, pkg_name, remote_repo_path, local_repo_path)
 
