@@ -12,6 +12,9 @@ libiopctasktimer/
 # account file
 account_github.json
 
+#common python lib
+pylib/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

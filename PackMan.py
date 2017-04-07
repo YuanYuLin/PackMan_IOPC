@@ -5,6 +5,12 @@ def setLibPath():
     # append library path
     python_lib = os.path.abspath("pylib")
     sys.path.append(python_lib)
+
+    if not os.path.exists(python_lib):
+        print "Please download [pylib] from github!!"
+        sys.exit(1)
+
+    sys.path.append(python_lib)
     python_lib = os.path.abspath("pyiopc")
     sys.path.append(python_lib)
 
@@ -42,6 +48,8 @@ ActionTable = {
 }
 
 if __name__ == '__main__':
+    setLibPath()
+
     if len(sys.argv) < 4:
         help()
         sys.exit(1)
@@ -54,7 +62,6 @@ if __name__ == '__main__':
         help()
         sys.exit(1)
 
-    setLibPath()
     cfg     = loadJson2Obj(json_menu)
     account = loadJson2Obj(account_menu)
 
