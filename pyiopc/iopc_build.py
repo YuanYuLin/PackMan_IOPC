@@ -1,18 +1,13 @@
-import imp
 import sys
 import os
 import iopc
-
-def _loadModule(module_name, module_path):
-    imp_fp, imp_pathname, imp_description = imp.find_module(module_name, module_path)
-    module = imp.load_module('packageComponent', imp_fp, imp_pathname, imp_description)
-    return module
+import ops
 
 def buildModule(pkg_enabled, pkg_name, local_repo_path):
     if pkg_enabled == 1:
         if(os.path.exists(local_repo_path)):
             print "Build " + pkg_name
-            build_pkg = _loadModule(iopc.PACKAGE_CFG, [pkg_name])
+            build_pkg = ops.loadModule(iopc.PACKAGE_CFG, [pkg_name])
             build_pkg.MAIN()
         else:
             print local_repo_path + " Not exist!"
