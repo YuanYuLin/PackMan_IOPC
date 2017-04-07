@@ -10,13 +10,21 @@ def loadJson2Obj(path):
     import iopc
     return iopc.loadJson2Obj(path)
 
-def SyncMain(actt, cfg):
+def SyncMain(args):
     import action_sync
-    action_sync.Main(actt, cfg)
+    action_sync.Main(args)
 
-def BuildMain(actt, cfg):
+def BuildMain(args):
     import action_build
-    action_build.Main(actt, cfg)
+    action_build.Main(args)
+
+def StatusMain(args):
+    import action_status
+    action_status.Main(args)
+
+def CommitMain(args):
+    import action_commit
+    action_commit.Main(args)
 
 def help():
     print "PackMan.py <menu file> <account file> <Action>"
@@ -27,6 +35,8 @@ def help():
 ActionTable = {
     "SYNC": SyncMain,
     "BUILD": BuildMain,
+    "STATUS": StatusMain,
+    "COMMIT": CommitMain,
 }
 
 if __name__ == '__main__':
@@ -46,5 +56,11 @@ if __name__ == '__main__':
     cfg     = loadJson2Obj(json_menu)
     account = loadJson2Obj(account_menu)
 
-    ActionTable[action](account, cfg)
+    import iopc
+    args = {}
+    iopc.setCfg(args, cfg)
+    iopc.setAccount(args, account)
+    iopc.setParams(args, sys.argv[3:])
+
+    ActionTable[action](args)
 
