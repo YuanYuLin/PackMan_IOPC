@@ -10,9 +10,9 @@ import ops_git
 def CommitPackage(pkg_enabled, pkg_name, remote_repo_path, local_repo_path):
     if pkg_enabled == 1:
         if(os.path.exists(local_repo_path)):
-            print "GIT status " + pkg_name
+            print "GIT commit " + pkg_name
             ops_git.commit(local_repo_path)
-            print "GIT status END"
+            print "GIT commit END"
 
 def Main(args):
     account = iopc.getAccount(args)

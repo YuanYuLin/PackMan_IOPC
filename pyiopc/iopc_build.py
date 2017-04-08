@@ -8,7 +8,7 @@ def buildModule(pkg_enabled, pkg_name, local_repo_path):
         if(os.path.exists(local_repo_path)):
             print "Build " + pkg_name
             build_pkg = ops.loadModule(iopc.PACKAGE_CFG, [pkg_name])
-            build_pkg.MAIN()
+            build_pkg.MAIN(pkg_name, local_repo_path)
         else:
             print local_repo_path + " Not exist!"
 
