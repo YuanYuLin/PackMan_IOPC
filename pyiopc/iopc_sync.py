@@ -15,7 +15,7 @@ def SyncPackage(pkg_enabled, pkg_name, remote_repo_path, local_repo_path):
             print "GIT pull END"
         else:
             print "GIT clone " + pkg_name
-            Git = ops_git.clone(remote_repo_path)
+            Git = ops_git.clone(remote_repo_path, local_repo_path)
             print "GIT clone END"
 
 def Main(args):
@@ -24,15 +24,16 @@ def Main(args):
     params = iopc.getParams(args)
     is_single_package = iopc.isSinglePackage(args)
     single_package_name = iopc.getSinglePackageName(args)
+    packages_dir = os.path.abspath(cfg['packages_dir'])
     packages = cfg['packages']
     for pkg in packages:
         pkg_name = pkg['name']
         pkg_enabled = pkg['enabled']
-        local_repo_path = os.path.abspath(pkg_name)
         remote_repo_path = account["URL"] + pkg_name
         if is_single_package:
             if single_package_name == pkg_name:
+                local_repo_path = os.path.abspath(packages_dir + os.sep + pkg_name)
                 SyncPackage(pkg_enabled, pkg_name, remote_repo_path, local_repo_path)
         else:
-            SyncPackage(pkg_enabled, pkg_name, remote_repo_path, local_repo_path)
+            SyncPackage(pkg_enabled, pkg_name, remote_repo_path, packages_dir)
 

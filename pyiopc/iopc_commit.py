@@ -20,11 +20,12 @@ def Main(args):
     params = iopc.getParams(args)
     is_single_package = iopc.isSinglePackage(args)
     single_package_name = iopc.getSinglePackageName(args)
+    packages_dir = cfg['packages_dir']
     packages = cfg['packages']
     for pkg in packages:
         pkg_name = pkg['name']
         pkg_enabled = pkg['enabled']
-        local_repo_path = os.path.abspath(pkg_name)
+        local_repo_path = os.path.abspath(packages_dir + os.sep + pkg_name)
         remote_repo_path = account["URL"] + pkg_name
         if is_single_package:
             if single_package_name == pkg_name:

@@ -1,6 +1,7 @@
 {
 "DEBUG": false,
 "name": "packages",
+"packages_dir": "packages",
 "packages": [
 {"enabled": 1, "name": "iopccfg_bdb"},
 {"enabled": 1, "name": "iopccmd"},
