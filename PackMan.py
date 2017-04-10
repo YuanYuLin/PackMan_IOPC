@@ -25,7 +25,7 @@ ActionTable = {
 }
 
 def help():
-    print "PackMan.py <menu file> <account file> <Action>"
+    print "PackMan.py <packages_dir> <account file> <Action>"
     print "  Action:"
     for act in ActionTable:
         print "    " + act
@@ -55,11 +55,16 @@ if __name__ == '__main__':
     if len(sys.argv) < 4:
         help()
 
-    json_menu    = sys.argv[1]
+    packages_dir = sys.argv[1]
     account_menu = sys.argv[2]
     action       = sys.argv[3]
 
     if action not in ActionTable:
+        help()
+
+    json_menu = os.path.abspath(packages_dir + os.sep + "packages.json")
+    if not os.path.exists(json_menu):
+        print "[" + json_menu + "] not exist!"
         help()
 
     cfg     = loadJson2Obj(json_menu)
