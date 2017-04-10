@@ -1,14 +1,3 @@
-# Package folder
-iopccfg_bdb/
-iopccmd/
-iopclauncher/
-iopcvm/
-libiopccmd_client/
-libiopccmd_system/
-libiopccommon/
-libiopctaskshell/
-libiopctasktimer/
-
 # account file
 account_github.json
 

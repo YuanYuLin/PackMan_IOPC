@@ -38,6 +38,7 @@ def setLibPath():
 
     if not os.path.exists(python_lib):
         print "Please download [pylib] from github!!"
+        print "git clone https://github.com/YuanYuLin/pylib.git"
         sys.exit(1)
 
     sys.path.append(python_lib)

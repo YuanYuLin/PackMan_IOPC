@@ -1,0 +1,9 @@
+iopccfg_bdb
+iopccmd
+iopclauncher
+iopcvm
+libiopccmd_client
+libiopccmd_system
+libiopccommon
+libiopctaskshell
+libiopctasktimer
