@@ -62,9 +62,13 @@ if __name__ == '__main__':
         help()
 
     json_menu = os.path.abspath(packages_dir + os.sep + "packages.json")
-    account_menu = os.path.abspath(packages_dir + os.sep + "account.json")
     if not os.path.exists(json_menu):
         print "[" + json_menu + "] not exist!"
+        help()
+
+    account_menu = os.path.abspath(packages_dir + os.sep + "account.json")
+    if not os.path.exists(account_menu):
+        print "[" + account_menu + "] not exist!"
         help()
 
     cfg     = loadJson2Obj(json_menu)
