@@ -7,3 +7,6 @@ libiopccmd_system
 libiopccommon
 libiopctaskshell
 libiopctasktimer
+
+# Account file
+account.json
