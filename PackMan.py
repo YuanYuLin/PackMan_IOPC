@@ -17,11 +17,16 @@ def CommitMain(args):
     import iopc_commit
     iopc_commit.Main(args)
 
+def ListMain(args):
+    import iopc_list
+    iopc_list.Main(args)
+
 ActionTable = {
     "SYNC": SyncMain,
     "BUILD": BuildMain,
     "STATUS": StatusMain,
     "COMMIT": CommitMain,
+    "LIST" : ListMain,
 }
 
 def help():
@@ -52,7 +57,7 @@ def loadJson2Obj(path):
 if __name__ == '__main__':
     setLibPath()
 
-    if len(sys.argv) < 4:
+    if len(sys.argv) < 3:
         help()
 
     packages_dir = sys.argv[1]
@@ -78,7 +83,7 @@ if __name__ == '__main__':
     args = {}
     iopc.setCfg(args, cfg)
     iopc.setAccount(args, account)
-    iopc.setParams(args, sys.argv[3:])
+    iopc.setParams(args, sys.argv[2:])
 
     ActionTable[action](args)
 
