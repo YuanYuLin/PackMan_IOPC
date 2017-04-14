@@ -66,18 +66,19 @@ if __name__ == '__main__':
     if action not in ActionTable:
         help()
 
-    json_menu = os.path.abspath(packages_dir + os.sep + "packages.json")
-    if not os.path.exists(json_menu):
-        print "[" + json_menu + "] not exist!"
+    # Check and Load Packages configs
+    packages_path = os.path.abspath(packages_dir + os.sep + "packages.json")
+    if not os.path.exists(packages_path):
+        print "[" + packages_path + "] not exist!"
         help()
+    cfg = loadJson2Obj(packages_path)
 
-    account_menu = os.path.abspath(packages_dir + os.sep + "account.json")
-    if not os.path.exists(account_menu):
-        print "[" + account_menu + "] not exist!"
+    # Check and Load Account configs 
+    account_path = os.path.abspath(packages_dir + os.sep + "account.json")
+    if not os.path.exists(account_path):
+        print "[" + account_path + "] not exist!"
         help()
-
-    cfg     = loadJson2Obj(json_menu)
-    account = loadJson2Obj(account_menu)
+    account = loadJson2Obj(account_path)
 
     import iopc
     args = {}
