@@ -5,26 +5,31 @@ import os
 import subprocess
 import pprint
 import iopc
+import ops
 import ops_git
 
 def CommitPackage(pkg_enabled, pkg_name, remote_repo_path, local_repo_path):
     if pkg_enabled == 1:
         if(os.path.exists(local_repo_path)):
             print "GIT commit " + pkg_name
-            ops_git.status(local_repo_path)
-
             version = ops_git.get_version_from_log(local_repo_path)
             major = version[0]
             minor = version[1] + 1
             aux = version[2]
-            commit_msg = ops_git.get_commit_msg(local_repo_path, major, minor, aux)
-            print "=Commit Message==========="
-            print commit_msg
-            print "=========================="
 
             while True:
-                input_answer = raw_input(">>commit(Yes/No/Exit)")
+                ops_git.status(local_repo_path)
+                commit_msg = ops_git.get_commit_msg(local_repo_path, major, minor, aux)
+                print "=Commit Message==========="
+                print commit_msg
+                print "=========================="
+
+                input_answer = raw_input(">>commit([Y]es/[N]o/E[x]it/[E]dit)")
                 if (input_answer == "e"):
+                    CMD=['vi', ops_git.get_commit_msg_file(local_repo_path)]
+                    ops.execCmd(CMD, local_repo_path, False, None)
+                    continue
+                if (input_answer == "x"):
                     print "Exit..."
                     sys.exit(1)
                 elif (input_answer == "y"):
