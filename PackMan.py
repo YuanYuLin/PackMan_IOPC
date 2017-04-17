@@ -23,10 +23,10 @@ def ListMain(args):
 
 ActionTable = {
     "SYNC": SyncMain,
-    "BUILD": BuildMain,
     "STATUS": StatusMain,
     "COMMIT": CommitMain,
     "LIST" : ListMain,
+    "BUILD": BuildMain,
 }
 
 def help():
