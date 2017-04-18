@@ -1,3 +1,6 @@
+busybox
+cross_compiler
+debootstrap
 iopccfg_bdb
 iopccmd
 iopclauncher

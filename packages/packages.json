@@ -3,6 +3,9 @@
 "name": "packages",
 "packages_dir": "packages",
 "packages": [
+{"enabled": 1, "name": "busybox"},
+{"enabled": 1, "name": "cross_compiler"},
+{"enabled": 1, "name": "debootstrap"},
 {"enabled": 1, "name": "iopccfg_bdb"},
 {"enabled": 1, "name": "iopccmd"},
 {"enabled": 1, "name": "iopclauncher"},
