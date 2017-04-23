@@ -8,7 +8,7 @@ import iopc
 import ops_git
 
 def StatusPackage(pkg_enabled, pkg_name, remote_repo_path, local_repo_path):
-    if pkg_enabled == 1:
+    if 1 == 1: #pkg_enabled == 1:
         if(os.path.exists(local_repo_path)):
             print "===status===[" + pkg_name + "]"
             ops_git.status(local_repo_path)
@@ -26,6 +26,8 @@ def Main(args):
         pkg_enabled = pkg['enabled']
         local_repo_path = os.path.abspath(packages_dir + os.sep + pkg_name)
         remote_repo_path = account["URL"] + pkg_name
+        if pkg_name == "":
+            continue
         if is_single_package:
             if single_package_name == pkg_name:
                 StatusPackage(pkg_enabled, pkg_name, remote_repo_path, local_repo_path)

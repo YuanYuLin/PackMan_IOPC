@@ -9,7 +9,7 @@ import ops
 import ops_git
 
 def CommitPackage(pkg_enabled, pkg_name, remote_repo_path, local_repo_path):
-    if pkg_enabled == 1:
+    if 1 == 1: #pkg_enabled == 1:
         if(os.path.exists(local_repo_path)):
             print "GIT commit " + pkg_name
             version = ops_git.get_version_from_log(local_repo_path)

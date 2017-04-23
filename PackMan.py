@@ -5,10 +5,6 @@ def SyncMain(args):
     import iopc_sync
     iopc_sync.Main(args)
 
-def BuildMain(args):
-    import iopc_build
-    iopc_build.Main(args)
-
 def StatusMain(args):
     import iopc_status
     iopc_status.Main(args)
@@ -26,7 +22,6 @@ ActionTable = {
     "STATUS": StatusMain,
     "COMMIT": CommitMain,
     "LIST" : ListMain,
-    "BUILD": BuildMain,
 }
 
 def help():
