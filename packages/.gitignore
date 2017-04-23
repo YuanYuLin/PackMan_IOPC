@@ -1,3 +1,4 @@
+arch_arm
 busybox
 cross_compiler
 debootstrap

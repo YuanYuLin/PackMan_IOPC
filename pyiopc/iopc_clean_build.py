@@ -5,15 +5,16 @@ import ops
 
 def buildModule(pkg_enabled, pkg_name, local_repo_path, output_path):
     if pkg_enabled == 1:
-        print "===Build===[" + pkg_name + "]"
+        print "===CleanBuild===[" + pkg_name + "]"
         ops.mkdir(output_path)
         if(os.path.exists(local_repo_path)):
             build_pkg = None
             build_pkg = ops.loadModule(pkg_name, iopc.PACKAGE_CFG, [local_repo_path])
             args = {"pkg_name": pkg_name, "pkg_path": local_repo_path, "output_path": output_path}
-            stamp_file = output_path + os.sep + "STAMP.BUILD"
+            build_pkg.MAIN_ENV(args)
+            stamp_file = output_path + os.sep + "STAMP.CLEANBUILD"
             if not os.path.exists(stamp_file):
-                if build_pkg.MAIN_BUILD(args):
+                if build_pkg.MAIN_CLEANBUILD(args):
                     ops.touch(stamp_file)
         else:
             print local_repo_path + " Not exist!"
