@@ -56,6 +56,8 @@ def Main(args):
         pkg_enabled = pkg['enabled']
         local_repo_path = os.path.abspath(packages_dir + os.sep + pkg_name)
         remote_repo_path = account["URL"] + pkg_name
+        if pkg_name == "":
+            continue
         if is_single_package:
             if single_package_name == pkg_name:
                 CommitPackage(pkg_enabled, pkg_name, remote_repo_path, local_repo_path)

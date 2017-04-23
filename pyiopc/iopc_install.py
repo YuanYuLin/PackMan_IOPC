@@ -13,7 +13,11 @@ def buildModule(pkg_enabled, pkg_name, local_repo_path, output_path):
             args = {"pkg_name": pkg_name, "pkg_path": local_repo_path, "output_path": output_path}
             stamp_file = output_path + os.sep + "STAMP.INSTALL"
             if not os.path.exists(stamp_file):
-                if build_pkg.MAIN_INSTALL(args):
+                res = build_pkg.MAIN_INSTALL(args):
+                iopc.packPkg(pkg_name)
+                pkg_dir=ops.getBinPkgPath()
+                iopc.installPkg(ops.path_join(pkg_dir, pkg_name))
+                if res:
                     ops.touch(stamp_file)
         else:
             print local_repo_path + " Not exist!"
@@ -30,8 +34,8 @@ def Main(args):
     for pkg in packages:
         pkg_name = pkg['name']
         pkg_enabled = pkg['enabled']
-        local_repo_path = os.path.abspath(packages_dir + os.sep + pkg_name)
-        output_path = os.path.abspath(output_dir + os.sep + pkg_name)
+        local_repo_path = os.path.abspath(ops.path.join(packages_dir, pkg_name))
+        output_path = os.path.abspath(ops.path.join(output_dir, pkg_name))
         if is_single_package:
             if single_package_name == pkg_name:
                 buildModule(pkg_enabled, pkg_name, local_repo_path, output_path)
