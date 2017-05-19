@@ -1,5 +1,6 @@
 import sys
 import os
+import pprint
 
 def SyncMain(args):
     import iopc_sync
@@ -62,14 +63,19 @@ if __name__ == '__main__':
         help()
 
     # Check and Load Packages configs
-    packages_path = os.path.abspath(packages_dir + os.sep + "packages.json")
+    cfg = {"DEBUG":False, "name":"packages_dir", "packages_dir":"packages", "packages":[]}
+    for obj in os.listdir(packages_dir):
+        if os.path.isdir(os.path.join(packages_dir, obj)):
+            cfg["packages"].append({"enabled":True, "name": obj})
+    '''
+    packages_path = os.path.abspath(packages_dir + os.sep + ".packages.json")
     if not os.path.exists(packages_path):
         print "[" + packages_path + "] not exist!"
         help()
     cfg = loadJson2Obj(packages_path)
-
+    '''
     # Check and Load Account configs 
-    account_path = os.path.abspath(packages_dir + os.sep + "account.json")
+    account_path = os.path.abspath("account.json")
     if not os.path.exists(account_path):
         print "[" + account_path + "] not exist!"
         help()

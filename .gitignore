@@ -1,5 +1,6 @@
 # account file
 account_github.json
+account.json
 
 #common python lib
 pylib/

@@ -1,16 +1,4 @@
-arch_arm
-busybox
-cross_compiler
-debootstrap
-iopccfg_bdb
-iopccmd
-iopclauncher
-iopcvm
-libiopccmd_client
-libiopccmd_system
-libiopccommon
-libiopctaskshell
-libiopctasktimer
+*
+!account_template.json
+!packages_template.json
 
-# Account file
-account.json

@@ -14,7 +14,7 @@ Folder structure:
 6. Folder for output target files.
  * output/<package_arch>/rootfs:		iopc.getTargetRootfs()
 7. Folder for developemnt 
- * output/<package_arch>/sdkstage:		N/A
+ * output/<package_arch>/sdkstage:		iopc.getSdkPath()
  * output/<package_arch>/sdkstage/usr/include:	iopc.getSdkInclude()
  * output/<package_arch>/sdkstage/usr/lib:	iopc.getSdkLib()
  * output/<package_arch>/sdkstage/pkgconfig:	iopc.getSdkPkgConfig()
