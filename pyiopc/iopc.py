@@ -148,6 +148,21 @@ def installPkg(pkg_name):
         ops.copyto(full_path, target_rootfs)
         ops.copyto(full_path, getSdkPath())
 
+def genPackagesList(output_dir, pkg_list):
+    pkg_list.sort()
+    fp = open(ops.path_join(output_dir, "package_list.json"), "w+")
+    fp.writelines("{" + os.linesep)
+    fp.writelines("\"DEBUG\":false," + os.linesep)
+    fp.writelines("\"name\":\"all_packages\"," + os.linesep)
+    fp.writelines("\"packages_dir\":\"packages\"," + os.linesep)
+    fp.writelines("\"packages\":[" + os.linesep)
+    for pkg in pkg_list:
+        fp.writelines("{\"enabled\": 1, \"name\":" + "\"" + pkg + "\"}," + os.linesep)
+    fp.writelines("{\"enabled\": 0, \"name\":\"\"}" + os.linesep)
+    fp.writelines("]," + os.linesep)
+    fp.writelines("\"version\":\"1.0.0\"" + os.linesep)
+    fp.writelines("}" + os.linesep)
+
 def genPkgFiles(pkg_config_path):
     fp = open(ops.path_join(pkg_config_path, "CONFIG.py"), "w+")
     fp.writelines("import ops" + os.linesep)

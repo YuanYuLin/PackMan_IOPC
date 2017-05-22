@@ -1,0 +1,30 @@
+{
+"DEBUG":false,
+"name":"all_packages",
+"packages_dir":"packages",
+"packages":[
+{"enabled": 1, "name":"arch_arm"},
+{"enabled": 1, "name":"busybox"},
+{"enabled": 1, "name":"cross_compiler"},
+{"enabled": 1, "name":"debootstrap"},
+{"enabled": 1, "name":"image_squashfs"},
+{"enabled": 1, "name":"initramfs_cpio_gz"},
+{"enabled": 1, "name":"initramfs_pristine"},
+{"enabled": 1, "name":"iopccfg_bdb"},
+{"enabled": 1, "name":"iopccmd"},
+{"enabled": 1, "name":"iopclauncher"},
+{"enabled": 1, "name":"iopcvm"},
+{"enabled": 1, "name":"libbdb"},
+{"enabled": 1, "name":"libiopccmd_client"},
+{"enabled": 1, "name":"libiopccmd_system"},
+{"enabled": 1, "name":"libiopccommon"},
+{"enabled": 1, "name":"libiopctaskshell"},
+{"enabled": 1, "name":"libiopctasktimer"},
+{"enabled": 1, "name":"libjsonc"},
+{"enabled": 1, "name":"libmicrohttpd"},
+{"enabled": 1, "name":"linux"},
+{"enabled": 1, "name":"systemd"},
+{"enabled": 0, "name":""}
+],
+"version":"1.0.0"
+}
