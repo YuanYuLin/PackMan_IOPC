@@ -11,7 +11,15 @@ def StatusPackage(pkg_enabled, pkg_name, remote_repo_path, local_repo_path):
     if 1 == 1: #pkg_enabled == 1:
         if(os.path.exists(local_repo_path)):
             print "===status===[" + pkg_name + "]"
-            ops_git.status(local_repo_path)
+            status = ops_git.status(local_repo_path)
+            if status :
+                if len(status) == 3:
+                    if status[2] == 0:
+                        print status[0]
+                    else:
+                        print status[1]
+            else:
+                print "Not a git repository!!"
 
 def Main(args):
     account = iopc.getAccount(args)
