@@ -18,11 +18,16 @@ def ListMain(args):
     import iopc_list
     iopc_list.Main(args)
 
+def GenListMain(args):
+    import iopc_genlist
+    iopc_genlist.Main(args)
+
 ActionTable = {
     "SYNC": SyncMain,
     "STATUS": StatusMain,
     "COMMIT": CommitMain,
     "LIST" : ListMain,
+    "GENLIST": GenListMain,
 }
 
 def help():

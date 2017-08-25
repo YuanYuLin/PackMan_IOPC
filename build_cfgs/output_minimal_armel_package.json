@@ -1,0 +1,122 @@
+{
+"DEBUG": false,
+"name": "packages",
+"packages_dir": "packages",
+"envs": 
+[
+{"enabled": 1, "env": {"ARCH_ALT" : "armel"} },
+{"enabled": 1, "env": {"DO_DEBOOTSTRAP" : "N"} },
+{"enabled": 0, "env": {"" : ""} }
+],
+
+"packages": 
+[
+{
+  "enabled": 1, "name": "arch_arm", "deps": [], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "cross_compiler", "deps": ["arch_arm"], 
+  "conflic": [], "args": {"version":"iopc_gcc_armel_2017.02.3", "versionOptions":["CodeSourcery-2014.05", "Linaro-2017.01", "iopc_gcc_armel_2017.02.3"]}, 
+  "patch": ""
+},{
+  "enabled": 1, "name": "debootstrap", "deps": ["arch_arm"], 
+  "conflic": [], "args": {"version":"debian_jessie_armel_minbase.tar.xz", "versionOptions":["debian_jessie_armel.tar.xz", "debian_jessie_armel_minbase.tar.xz", "debian_jessie_armhf.tar.xz"]},
+  "patch": ""
+},{
+  "enabled": 1, "name": "busybox", "deps": ["cross_compiler"], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "finit", "deps": ["cross_compiler"], 
+  "conflic": [], "args": {},
+  "patch": "COMMON"
+},{
+  "enabled": 1, "name": "libcap", "deps":["debootstrap"], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "libapparmor", "deps":["debootstrap"], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "libpcre3", "deps":["debootstrap"], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "libselinux", "deps":["debootstrap", "libpcre3"], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "libseccomp", "deps":["debootstrap"], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "libunbound", "deps":["debootstrap"], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "libgmp10", "deps":["debootstrap"], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "libnettle", "deps":["debootstrap"], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "libidn11", "deps":["debootstrap"], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "libtasn1", "deps":["debootstrap"], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "libffi", "deps":["debootstrap"], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "libp11", "deps":["libffi"], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "libz", "deps":["debootstrap"], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "libgnutls", "deps":["libz", "libp11", "libtasn1", "libidn11", "libnettle", "libgmp10", "libunbound"], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "lxc", "deps":["libgnutls", "libselinux", "libapparmor", "libcap"],
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "xorg", "deps":[],
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "xtest", "deps":["cross_compiler", "xorg"], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "dropbear", "deps":["cross_compiler", "debootstrap"],
+  "conflic": [], "args": {},
+  "patch": "COMMON"
+},{
+  "enabled": 1, "name": "image_configs", "deps": ["arch_arm"], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "image_squashfs", "deps": ["arch_arm"], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 0, "name": "", "deps": [], 
+  "conflic": [], "args": {},
+  "patch": ""
+}
+],
+"version": "1.0.0"
+}
+

@@ -16,7 +16,10 @@ def ListPackage(pkg_enabled, pkg_name, remote_repo_path, local_repo_path):
             if status :
                 if len(status) == 3:
                     if status[2] == 0:
-                        sym = "M"
+                        if status[0] == '' :
+                            sym = "*"
+                        else:
+                            sym = "M"
                     else:
                         sym = "E"
                 else:
@@ -48,7 +51,7 @@ def Main(args):
     single_package_name = iopc.getSinglePackageName(args)
     packages_dir = cfg['packages_dir']
     packages = cfg['packages']
-    for pkg in packages:
+    for pkg in sorted(packages, key=lambda k: k['name']):
         pkg_desc = ""
         pkg_name = pkg['name']
         pkg_enabled = pkg['enabled']
@@ -61,4 +64,4 @@ def Main(args):
                 ListPackage(pkg_enabled, pkg_name, remote_repo_path, local_repo_path)
         else:
             ListPackage(pkg_enabled, pkg_name, remote_repo_path, local_repo_path)
-    print "M: Modified, @: Not git repo, E: Error, !: Unknow"
+    print "*: NoChanged, M: Modified, @: Not git repo, E: Error, !: Unknow"

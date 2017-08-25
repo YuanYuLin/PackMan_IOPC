@@ -1,6 +1,14 @@
 import sys
 import os
 
+def ExportEnvs(args):
+    import ops
+    cfg = iopc.getCfg(args)
+    envs = cfg['envs']
+    for env in envs:
+        if env['enabled']:
+            ops.exportEnv(env['env'])
+
 def EnvMain(args):
     import iopc_env
     iopc_env.Main(args)
@@ -8,6 +16,10 @@ def EnvMain(args):
 def ExtractMain(args):
     import iopc_extract
     iopc_extract.Main(args)
+
+def PatchMain(args):
+    import iopc_patch
+    iopc_patch.Main(args)
 
 def ConfigureMain(args):
     import iopc_configure
@@ -29,7 +41,7 @@ def AllMain(args):
     cfg = iopc.getCfg(args)
     packages = cfg['packages']
     for pkg in packages:
-        for act in ["ENV", "EXTRACT", "CONFIGURE", "BUILD", "INSTALL"]:
+        for act in ["ENV", "EXTRACT", "PATCH", "CONFIGURE", "BUILD", "INSTALL"]:
             pkg_enabled = pkg['enabled']
             pkg_name = pkg['name']
             params = [act, pkg_name]
@@ -42,6 +54,7 @@ ActionTable = {
     "ALL": AllMain,
     "ENV": EnvMain,
     "EXTRACT": ExtractMain,
+    "PATCH" : PatchMain,
     "CONFIGURE": ConfigureMain,
     "BUILD": BuildMain,
     "INSTALL": InstallMain,
@@ -106,6 +119,7 @@ if __name__ == '__main__':
     iopc.setOutputDir(args, output_dir)
     iopc.setAccount(args, account)
     iopc.setParams(args, sys.argv[3:])
+    ExportEnvs(args)
 
     ActionTable[action](args)
 

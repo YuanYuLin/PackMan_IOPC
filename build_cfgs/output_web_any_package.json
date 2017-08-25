@@ -1,0 +1,42 @@
+{
+"DEBUG": false,
+"name": "web-dev",
+"packages_dir": "packages",
+"envs": 
+[
+{"enabled": 1, "env": {"ARCH_ALT" : "any"} },
+{"enabled": 1, "env": {"DO_DEBOOTSTRAP" : "N"} },
+{"enabled": 0, "env": {"" : ""} }
+],
+
+"packages": 
+[
+{
+  "enabled": 1, "name": "arch_arm", "deps": [], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "cross_compiler", "deps": ["arch_arm"], 
+  "conflic": [], "args": {"version":"iopc_gcc_x86_64_2017.02.3", "versionOptions":[]}, 
+  "patch": ""
+},{
+  "enabled": 1, "name": "golang", "deps": ["arch_arm"], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "nodejs", "deps": ["arch_arm"], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "web_cooking", "deps": ["arch_arm"], 
+  "conflic": [], "args": {"version":"default", "versionOptions":[]},
+  "patch": ""
+},{
+  "enabled": 0, "name": "", "deps": [], 
+  "conflic": [], "args": {},
+  "patch": ""
+}
+],
+"version": "1.0.0"
+}
+

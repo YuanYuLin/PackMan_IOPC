@@ -8,7 +8,7 @@ Folder structure:
  * output/<package_name>:			args['output_path']
 4. Base rootfs for development and binary objects; 
    The path is overrided by "debootstrap" package.
- * output/<package_arch>:			iopc.getBaseRootFile()
+ * output/<package_arch>:			iopc.getOutputRootDir()
 5. Folder for binary files package 
  * output/<package_arch>/pakcages_dir:		iopc.getBinPkgPath()
 6. Folder for output target files.

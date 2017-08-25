@@ -2,6 +2,11 @@
 "DEBUG": false,
 "name": "packages",
 "packages_dir": "packages",
+"envs": [
+{"enabled": 1, "env": {"ARCH_ALT" : "armel"} },
+{"enabled": 1, "env": {"DO_DEBOOTSTRAP" : "N"} },
+{"enabled": 0, "env": {"" : ""} }
+],
 "packages": [
 {"enabled": 1, "name": "arch_arm", "deps": []},
 {"enabled": 1, "name": "cross_compiler", "deps": ["arch_arm"]},
