@@ -8,9 +8,21 @@ import iopc
 import ops
 import ops_git
 
+def checkSize_filelist(folder):
+    for filename in os.listdir(folder):
+        statinfo = os.stat(ops.path_join(folder, filename))
+        if statinfo.st_size > iopc.MAX_FILE_SIZE:
+            print(folder, filename, statinfo.st_size)
+            print "Please SPLIT file", filename
+            sys.exit(1)
+        
+
 def CommitPackage(pkg_enabled, pkg_name, remote_repo_path, local_repo_path):
     if 1 == 1: #pkg_enabled == 1:
-        if(os.path.exists(local_repo_path)):
+        if(ops.isExist(local_repo_path)):
+            checkSize_filelist(local_repo_path)
+            exit
+            print(chr(27) + "[2J")
             print "GIT commit [ " + pkg_name + " ]"
             version = ops_git.get_version_from_log(local_repo_path)
             major = version[0]

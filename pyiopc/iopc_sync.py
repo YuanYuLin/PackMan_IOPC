@@ -6,6 +6,12 @@ import pprint
 import iopc
 import ops_git
 
+def mergeFile(workspace)
+    for filename in os.listdir(folder):
+        if iopc.is_split_info(filename):
+            file_list = iopc.read_split_info(workspace, info_file)
+            iopc.merge_file(workspace, file_list)
+
 def SyncPackage(pkg_enabled, pkg_name, remote_repo_path, local_repo_path):
     if 1 == 1: #pkg_enabled == 1:
         print local_repo_path
@@ -36,10 +42,12 @@ def Main(args):
         if is_single_package:
             if single_package_name == pkg_name:
                 SyncPackage(pkg_enabled, pkg_name, remote_repo_path, local_repo_path)
+                mergeFilelist(local_repo_path)
         else:
             pkg_name_list.append(pkg_name)
             SyncPackage(pkg_enabled, pkg_name, remote_repo_path, local_repo_path)
+            mergeFilelist(local_repo_path)
 
-    if not is_single_package:
-        iopc.genPackagesList(packages_dir, pkg_name_list)
+#    if not is_single_package:
+#        iopc.genPackagesList(packages_dir, pkg_name_list)
 

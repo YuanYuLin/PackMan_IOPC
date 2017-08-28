@@ -1,8 +1,11 @@
 import ops
+import tempfile
+import re
 import os
 import sys
 
 PACKAGE_CFG="/Package/CONFIG"
+MAX_FILE_SIZE = (99 * 1024 *1024)
 
 def getAccount(obj):
     return obj["account"]
@@ -267,3 +270,78 @@ def apply_patch(workspace, patch_file):
     if res[2] != 0:
         return False
     return True
+
+def gen_split_info(workspace, file_name, msg):
+    split_info_data = '__SPLIT__' + file_name + '.info'
+    md5_str = ops.file_md5_str(ops.path_join(workspace, file_name))
+    fp = open(ops.path_join(workspace, split_info_data), "w")
+    fp.writelines('infoname:[' + split_info_data +']\n')
+    fp.writelines('filename:[' + file_name + ']\n')
+    fp.writelines('checksum:[' + md5_str + ']\n')
+    fp.writelines(msg)
+    fp.close()
+
+    info = read_split_info(workspace, split_info_data)
+    fp = tempfile.NamedTemporaryFile(delete=False)
+    for info_file_name in info["file_list"]:
+        print info_file_name
+        with open(ops.path_join(workspace, info_file_name)) as src_file:
+            fp.write(src_file.read())
+    fp.close()
+    split_md5_str = ops.file_md5_str(fp.name)
+    os.unlink(fp.name)
+    if split_md5_str == md5_str:
+        return True
+    return False
+
+def split_file(workspace, file_name):
+    response = ops.splitFile(workspace, file_name, MAX_FILE_SIZE, '__SPLIT__', '.part')
+    return response
+
+def is_split_info(workspace, info_file_name):
+    if info_file_name.startswith('__SPLIT__') and info_file_name.endswith('.info'):
+        return True
+    return False
+
+def read_split_info(workspace, info_file):
+    info = {"infoname":"", "file_name":"", "file_md5":"", "file_list":[]}
+    file_name = ""
+    with open(ops.path_join(workspace, info_file)) as fp:
+        for line in fp:
+            split_file_name = ""
+            rule_split_file_name = re.search('creating file \'(.+?)\'', line)
+            if rule_split_file_name:
+                split_file_name = rule_split_file_name.group(1)
+                info["file_list"].append(split_file_name)
+
+            rule_info_name = re.search('infoname:\[(.+?)\]', line)
+            if rule_info_name:
+                info_name = rule_info_name.group(1)
+                info["info_name"] = info_name
+
+            rule_file_name = re.search('filename:\[(.+?)\]', line)
+            if rule_file_name:
+                file_name = rule_file_name.group(1)
+                info["file_name"] = file_name
+
+            rule_file_md5 = re.search('checksum:\[(.+?)\]', line)
+            if rule_file_md5:
+                file_md5 = rule_file_md5.group(1)
+                info["file_md5"] = file_md5
+    return info
+
+def merge_file(workspace, info):
+    full_file_name = ops.mergeFiles(workspace, info['file_name'], info['file_list'])
+    md5_str = ops.file_md5_str(full_file_name)
+    if md5_str == info['file_md5']:
+        return True
+    return False
+
+def unlink_split_data(workspace, info):
+    for file_name in info['file_list']:
+        print "delete file", file_name
+        os.unlink(ops.path_join(workspace, file_name))
+
+    print "delete file", info['info_name']
+    os.unlink(ops.path_join(workspace, info['info_name']))
+

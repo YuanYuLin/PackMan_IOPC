@@ -22,12 +22,22 @@ def GenListMain(args):
     import iopc_genlist
     iopc_genlist.Main(args)
 
+def SplitFilesMain(args):
+    import iopc_splitfiles
+    iopc_splitfiles.Main(args)
+
+def MergeFilesMain(args):
+    import iopc_mergefiles
+    iopc_mergefiles.Main(args)
+
 ActionTable = {
     "SYNC": SyncMain,
     "STATUS": StatusMain,
     "COMMIT": CommitMain,
     "LIST" : ListMain,
     "GENLIST": GenListMain,
+    "SPLITFILES": SplitFilesMain,
+    "MERGEFILES": MergeFilesMain,
 }
 
 def help():

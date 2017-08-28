@@ -13,10 +13,13 @@ def ListPackage(pkg_enabled, pkg_name, remote_repo_path, local_repo_path):
     if 1 == 1: #pkg_enabled == 1:
         if(os.path.exists(local_repo_path)):
             status = ops_git.status(local_repo_path)
+            #pprint.pprint(status)
             if status :
                 if len(status) == 3:
                     if status[2] == 0:
-                        if status[0] == '' :
+                        if status[0].find("git push") != -1:
+                            sym = "M"
+                        elif status[0].find("nothing to commit") != -1:
                             sym = "*"
                         else:
                             sym = "M"
