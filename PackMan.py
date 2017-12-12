@@ -79,16 +79,20 @@ if __name__ == '__main__':
 
     # Check and Load Packages configs
     cfg = {"DEBUG":False, "name":"packages_dir", "packages_dir":"packages", "packages":[]}
-    for obj in os.listdir(packages_dir):
-        if os.path.isdir(os.path.join(packages_dir, obj)):
-            cfg["packages"].append({"enabled":True, "name": obj})
-    '''
-    packages_path = os.path.abspath(packages_dir + os.sep + ".packages.json")
-    if not os.path.exists(packages_path):
-        print "[" + packages_path + "] not exist!"
-        help()
-    cfg = loadJson2Obj(packages_path)
-    '''
+
+    import ops
+    if action == "SYNC":
+        packages_json_file = os.path.abspath(ops.path_join(packages_dir, "package_list.json"))
+        if not os.path.exists(packages_json_file):
+            print "[" + packages_json_file + "] not exist!"
+            help()
+        cfg = loadJson2Obj(packages_json_file)
+    else:
+        for obj in os.listdir(packages_dir):
+            if os.path.isdir(ops.path_join(packages_dir, obj)):
+                cfg["packages"].append({"enabled":True, "name": obj})
+
+
     # Check and Load Account configs 
     account_path = os.path.abspath("account.json")
     if not os.path.exists(account_path):

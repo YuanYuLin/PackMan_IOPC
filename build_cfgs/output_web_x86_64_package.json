@@ -1,0 +1,54 @@
+{
+"DEBUG": false,
+"name": "web-dev",
+"packages_dir": "packages",
+"envs": 
+[
+{"enabled": 1, "env": {"ARCH_ALT" : "x86_64"} },
+{"enabled": 1, "env": {"DO_DEBOOTSTRAP" : "N"} },
+{"enabled": 0, "env": {"" : ""} }
+],
+
+"packages": 
+[
+{
+  "enabled": 1, "name": "arch_arm", "deps": [], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "cross_compiler", "deps": ["arch_arm"], 
+  "conflic": [], "args": {"version":"iopc_gcc_x86_64_2017.02.3", "versionOptions":[], "skip_install":""}, 
+  "patch": ""
+},{
+  "enabled": 1, "name": "host_nodejs", "deps": ["arch_arm"], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "host_php", "deps": ["arch_arm"], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "web_cooking", "deps": ["arch_arm", "host_php", "host_nodejs"], 
+  "conflic": [], "args": {"version":"default", "versionOptions":[], "project":"Test"},
+  "patch": ""
+},{
+  "enabled": 1, "name": "golang", "deps": ["arch_arm"], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "go_web_servlet", "deps": ["golang"], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "image_squashfs", "deps": ["arch_arm"], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 0, "name": "", "deps": [], 
+  "conflic": [], "args": {},
+  "patch": ""
+}
+],
+"version": "1.0.0"
+}
+

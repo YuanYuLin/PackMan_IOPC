@@ -168,7 +168,7 @@ def make_initramfs(workspace, output_dir, initramfs_file='root_initramfs.cpio.gz
 def make_squashfs(workspace, output_dir):
     output_file = ops.path_join(output_dir, "rootfs.squashfs")
     ops.rm_file(output_file)
-    CMD=['mksquashfs', workspace, output_file, '-noappend', '-all-root', '-comp', 'lzo']
+    CMD=['sudo', 'mksquashfs', workspace, output_file, '-noappend', '-all-root', '-comp', 'lzo']
     res = ops.execCmd(CMD, output_dir, False, None)
     if res[2] != 0:
         print res[1]
@@ -186,28 +186,37 @@ def installBin(pkg_name, bin_obj, dst):
     bin_pkg_path = getBinPkgPath(pkg_name)
     full_dst = ops.path_join(bin_pkg_path, dst)
     ops.mkdir(full_dst)
-    ops.copyto(bin_obj, full_dst)
+    ops.sudo_copyto(bin_obj, full_dst)
 
 def installPkg(pkg_name):
+    print "===>install Pkg" + pkg_name
     binary_package = getBinPkgPath(pkg_name)
     target_rootfs = ops.getEnv("ARCH_ROOTFS")
     sdk_include = getSdkInclude()
     for obj in os.listdir(binary_package):
         full_path = ops.path_join(binary_package, obj)
         if obj in ["include"]:
+            print "install include" + full_path
             ops.path_join(full_path, ".")
-            ops.copyto(ops.path_join(full_path, "."), getSdkInclude())
+            ops.sudo_copyto(ops.path_join(full_path, "."), getSdkInclude())
             for root, dirnames, filenames in os.walk(full_path):
                 for f_obj in filenames:
-                    ops.copyto(ops.path_join(root, f_obj), getDevPkgPath(pkg_name))
+                    ops.sudo_copyto(ops.path_join(root, f_obj), getDevPkgPath(pkg_name))
             continue
         if obj in ["Package", ".git", "LICENSE", ".gitignore"]:
             continue
-        ops.copyto(full_path, target_rootfs)
-        ops.copyto(full_path, getSdkPath())
+        if os.path.isdir(ops.path_join(target_rootfs, obj)):
+            ops.sudo_mkdir(ops.path_join(target_rootfs, obj))
+        print ops.path_join(target_rootfs, obj)
+        print "RootFS from " + full_path
+        print "to " + target_rootfs
+        ops.sudo_copyto(full_path, target_rootfs)
+        print "SdkDev from " + full_path
+        print "to " + getSdkPath()
+        ops.sudo_copyto(full_path, getSdkPath())
         for root, dirnames, filenames in os.walk(full_path):
             for f_obj in filenames:
-                ops.copyto(ops.path_join(root, f_obj), getDevPkgPath(pkg_name))
+                ops.sudo_copyto(ops.path_join(root, f_obj), getDevPkgPath(pkg_name))
 
 def genPackagesList(output_dir, pkg_list):
     pkg_list.sort()
@@ -267,6 +276,8 @@ def apply_patch(workspace, patch_file):
     print workspace
     print patch_file
     res = ops.execCmd(CMD, workspace, False, None)
+    print "Apply patch " + patch_file
+    print res
     if res[2] != 0:
         return False
     return True

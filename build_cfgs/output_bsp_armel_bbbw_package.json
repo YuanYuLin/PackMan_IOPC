@@ -19,8 +19,12 @@
   "conflic": [], "args": {"version":"iopc_gcc_armel_2017.02.3", "versionOptions":["CodeSourcery-2014.05", "Linaro-2017.01", "iopc_gcc_armel_2017.02.3"]},
   "patch": ""
 },{
+  "enabled": 1, "name": "uboot", "deps": ["cross_compiler"], 
+  "conflic": [], "args": {"version":"armel_am335x"},
+  "patch": ""
+},{
   "enabled": 1, "name": "busybox", "deps": ["cross_compiler"], 
-  "conflic": [], "args": {},
+  "conflic": [], "args": {"version":"busybox-1.25.1", "config":"initramfs"},
   "patch": ""
 },{
   "enabled": 0, "name": "finit", "deps": ["cross_compiler"], 
@@ -31,16 +35,16 @@
   "conflic": [], "args": {},
   "patch": ""
 },{
-  "enabled": 1, "name": "initramfs_cpio_gz", "deps": ["cross_compiler"], 
-  "conflic": [], "args": {},
-  "patch": ""
-},{
   "enabled": 0, "name": "initramfs_hello", "deps": ["cross_compiler"], 
   "conflic": [], "args": {},
   "patch": ""
 },{
-  "enabled": 1, "name": "linux", "deps": ["cross_compiler"], 
+  "enabled": 1, "name": "initramfs_cpio_gz", "deps": ["cross_compiler"], 
   "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "linux", "deps": ["cross_compiler"], 
+  "conflic": [], "args": {"version":"linux-4.1.42", "config":"armel_bbbw_4.1.42", "format":"uImage"},
   "patch": ""
 },{
   "enabled": 0, "name": "bzimage_initramfs", "deps": ["arch_arm"], 
