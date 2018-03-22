@@ -23,6 +23,10 @@
   "conflic": [], "args": {"version":"busybox-1.25.1", "config":"initramfs"},
   "patch": ""
 },{
+  "enabled": 0, "name": "finit", "deps": ["cross_compiler"], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
   "enabled": 1, "name": "initramfs_pristine", "deps": ["cross_compiler"], 
   "conflic": [], "args": {},
   "patch": ""
@@ -36,7 +40,7 @@
   "patch": ""
 },{
   "enabled": 1, "name": "linux", "deps": ["cross_compiler"], 
-  "conflic": [], "args": {},
+  "conflic": [], "args": {"version":"4.1.42", "config":"x86_64_qemu", "format":"zImage"},
   "patch": ""
 },{
   "enabled": 0, "name": "bzimage_initramfs", "deps": ["arch_arm"], 

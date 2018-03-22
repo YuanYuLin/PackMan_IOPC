@@ -6,6 +6,7 @@
 [
 {"enabled": 1, "env": {"ARCH_ALT" : "armel"} },
 {"enabled": 1, "env": {"DO_DEBOOTSTRAP" : "N"} },
+{"enabled": 1, "env": {"BUILD_JOBS_COUNT" : "3"} },
 {"enabled": 0, "env": {"" : ""} }
 ],
 "packages": 
@@ -44,7 +45,23 @@
   "patch": ""
 },{
   "enabled": 1, "name": "linux", "deps": ["cross_compiler"], 
-  "conflic": [], "args": {"version":"linux-4.1.42", "config":"armel_vbp_4.1.42", "format":"zImage"},
+  "conflic": [], "args": {"version":"4.1.42", "config":"armel_vbp_4.1.42", "format":"zImage"},
+  "patch": ""
+},{
+  "enabled": 1, "name": "linux_modules_hello", "deps": ["cross_compiler", "linux"], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "linux_modules_core_gpio", "deps": ["cross_compiler", "linux"], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "linux_modules_hw_gpio_dummy", "deps": ["cross_compiler", "linux", "linux_modules_core_gpio"], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "image_kmod_squashfs", "deps": ["linux"], 
+  "conflic": [], "args": {},
   "patch": ""
 },{
   "enabled": 1, "name": "qemu_hdd", "deps": ["cross_compiler"], 

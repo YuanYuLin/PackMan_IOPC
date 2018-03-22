@@ -64,11 +64,12 @@ def getBaseRootFile(file_path=None):
     else:
         return ops.path_join(base_rootfs_dir, file_path)
 
+'''
 def getDevPkgPath(pkg_name):
     dev_pkg_path = ops.path_join(getOutputRootDir(), "Dev/" + pkg_name)
     ops.mkdir(dev_pkg_path)
     return dev_pkg_path
-
+'''
 def getBinPkgPath(pkg_name):
     bin_pkg_path = ops.path_join(getBinPkgRootPath(), pkg_name)
     return bin_pkg_path
@@ -76,7 +77,7 @@ def getBinPkgPath(pkg_name):
 def getSdkPath():
     sdkstage = ops.getEnv("SDKSTAGE")
     return sdkstage
-
+'''
 def getSdkInclude():
     sdkstage = ops.getEnv("SDKSTAGE")
     dst_includes = sdkstage + "/usr/include"
@@ -92,6 +93,7 @@ def getSdkPkgConfig():
     sdkstage = ops.getEnv("SDKSTAGE")
     dst_pc = sdkstage + "/pkgconfig/"
     return dst_pc
+'''
 
 def make_web(workspace, materials_dir, menu_file, food_dir, debug=False):
     CMD=["python2.7", "cook.py", materials_dir, menu_file, food_dir, "MAKE"]
@@ -165,8 +167,8 @@ def make_initramfs(workspace, output_dir, initramfs_file='root_initramfs.cpio.gz
     if res[2] != 0:
         print res[1]
 
-def make_squashfs(workspace, output_dir):
-    output_file = ops.path_join(output_dir, "rootfs.squashfs")
+def make_squashfs(workspace, output_dir, squashfs_name):
+    output_file = ops.path_join(output_dir, squashfs_name)
     ops.rm_file(output_file)
     CMD=['sudo', 'mksquashfs', workspace, output_file, '-noappend', '-all-root', '-comp', 'lzo']
     res = ops.execCmd(CMD, output_dir, False, None)
@@ -192,16 +194,23 @@ def installPkg(pkg_name):
     print "===>install Pkg" + pkg_name
     binary_package = getBinPkgPath(pkg_name)
     target_rootfs = ops.getEnv("ARCH_ROOTFS")
-    sdk_include = getSdkInclude()
+    sdk_include = ops.path_join(getSdkPath(), "usr/include")
+    sdk_pkgconfig = ops.path_join(getSdkPath(), "pkgconfig")
+
     for obj in os.listdir(binary_package):
         full_path = ops.path_join(binary_package, obj)
         if obj in ["include"]:
             print "install include" + full_path
             ops.path_join(full_path, ".")
-            ops.sudo_copyto(ops.path_join(full_path, "."), getSdkInclude())
-            for root, dirnames, filenames in os.walk(full_path):
-                for f_obj in filenames:
-                    ops.sudo_copyto(ops.path_join(root, f_obj), getDevPkgPath(pkg_name))
+            ops.sudo_copyto(ops.path_join(full_path, "."), sdk_include)
+            #for root, dirnames, filenames in os.walk(full_path):
+            #    for f_obj in filenames:
+            #        ops.sudo_copyto(ops.path_join(root, f_obj), getDevPkgPath(pkg_name))
+            continue
+        if obj in ["pkgconfig"]:
+            print "install pkgconfig " + full_path
+            ops.path_join(full_path, ".")
+            ops.sudo_copyto(ops.path_join(full_path, "."), sdk_pkgconfig)
             continue
         if obj in ["Package", ".git", "LICENSE", ".gitignore"]:
             continue
@@ -214,9 +223,11 @@ def installPkg(pkg_name):
         print "SdkDev from " + full_path
         print "to " + getSdkPath()
         ops.sudo_copyto(full_path, getSdkPath())
+        '''
         for root, dirnames, filenames in os.walk(full_path):
             for f_obj in filenames:
                 ops.sudo_copyto(ops.path_join(root, f_obj), getDevPkgPath(pkg_name))
+        '''
 
 def genPackagesList(output_dir, pkg_list):
     pkg_list.sort()

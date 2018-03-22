@@ -6,6 +6,7 @@
 [
 {"enabled": 1, "env": {"ARCH_ALT" : "armel"} },
 {"enabled": 1, "env": {"DO_DEBOOTSTRAP" : "N"} },
+{"enabled": 1, "env": {"BUILD_JOBS_COUNT" : "3"} },
 {"enabled": 0, "env": {"" : ""} }
 ],
 
@@ -14,93 +15,150 @@
 {
   "enabled": 1, "name": "arch_arm", "deps": [], 
   "conflic": [], "args": {},
+  "group": ["build_tool"],
   "patch": ""
 },{
   "enabled": 1, "name": "cross_compiler", "deps": ["arch_arm"],
   "conflic": [], "args": {"version":"iopc_gcc_armel_2017.02.3", "versionOptions":["CodeSourcery-2014.05", "Linaro-2017.01", "iopc_gcc_armel_2017.02.3"]},
+  "group": ["build_tool"],
   "patch": ""
 },{
   "enabled": 1, "name": "debootstrap", "deps": ["arch_arm"], 
   "conflic": [], "args": {"version":"debian_jessie_armel_minbase.tar.xz", "versionOptions":["debian_jessie_armel.tar.xz", "debian_jessie_armel_minbase.tar.xz", "debian_jessie_armhf.tar.xz"]},
+  "group": ["build_tool", "base"],
   "patch": ""
 },{
   "enabled": 1, "name": "busybox", "deps": ["cross_compiler"], 
   "conflic": [], "args": {"version":"busybox-1.25.1", "config":"rootfs"},
+  "group": ["base"],
   "patch": ""
 },{
   "enabled": 1, "name": "finit", "deps": ["cross_compiler"], 
   "conflic": [], "args": {},
+  "group": ["base"],
   "patch": "COMMON"
 },{
   "enabled": 1, "name": "libcap", "deps":["debootstrap"], 
   "conflic": [], "args": {},
+  "group": ["lxc"],
   "patch": ""
 },{
   "enabled": 1, "name": "libapparmor", "deps":["debootstrap"], 
   "conflic": [], "args": {},
+  "group": ["lxc"],
   "patch": ""
 },{
   "enabled": 1, "name": "libpcre3", "deps":["debootstrap"], 
   "conflic": [], "args": {},
+  "group": ["lxc"],
   "patch": ""
 },{
   "enabled": 1, "name": "libselinux", "deps":["debootstrap", "libpcre3"], 
   "conflic": [], "args": {},
+  "group": ["lxc"],
   "patch": ""
 },{
   "enabled": 1, "name": "libseccomp", "deps":["debootstrap"], 
   "conflic": [], "args": {},
+  "group": ["lxc"],
   "patch": ""
 },{
   "enabled": 1, "name": "libunbound", "deps":["debootstrap"], 
   "conflic": [], "args": {},
+  "group": ["lxc"],
   "patch": ""
 },{
   "enabled": 1, "name": "libgmp10", "deps":["debootstrap"], 
   "conflic": [], "args": {},
+  "group": ["lxc"],
   "patch": ""
 },{
   "enabled": 1, "name": "libnettle", "deps":["debootstrap"], 
   "conflic": [], "args": {},
+  "group": ["lxc"],
   "patch": ""
 },{
   "enabled": 1, "name": "libidn11", "deps":["debootstrap"], 
   "conflic": [], "args": {},
+  "group": ["lxc"],
   "patch": ""
 },{
   "enabled": 1, "name": "libtasn1", "deps":["debootstrap"], 
   "conflic": [], "args": {},
+  "group": ["lxc"],
   "patch": ""
 },{
   "enabled": 1, "name": "libffi", "deps":["debootstrap"], 
   "conflic": [], "args": {},
+  "group": ["lxc"],
   "patch": ""
 },{
   "enabled": 1, "name": "libp11", "deps":["libffi"], 
   "conflic": [], "args": {},
+  "group":["lxc"],
   "patch": ""
 },{
   "enabled": 1, "name": "libz", "deps":["debootstrap"], 
   "conflic": [], "args": {},
+  "group": ["lxc"],
   "patch": ""
 },{
   "enabled": 1, "name": "libgnutls", "deps":["libz", "libp11", "libtasn1", "libidn11", "libnettle", "libgmp10", "libunbound"], 
   "conflic": [], "args": {},
+  "group": ["lxc"],
   "patch": ""
 },{
   "enabled": 1, "name": "lxc", "deps":["libgnutls", "libselinux", "libapparmor", "libcap", "libseccomp"],
   "conflic": [], "args": {},
+  "group": ["lxc"],
+  "patch": ""
+},{
+  "enabled": 1, "name": "drbd-utils", "deps":["cross_compiler"],
+  "conflic": [], "args": {},
+  "group": ["drbd"],
+  "patch": ""
+},{
+  "enabled": 1, "name": "libpixman", "deps":["cross_compiler"],
+  "conflic": [], "args": {},
+  "group": ["gui"],
+  "patch": ""
+},{
+  "enabled": 1, "name": "libcairo", "deps":["cross_compiler", "libpixman"],
+  "conflic": [], "args": {},
+  "group": ["gui"],
+  "patch": ""
+},{
+  "enabled": 1, "name": "libxml2", "deps":["cross_compiler"],
+  "conflic": [], "args": {},
+  "group": ["gui"],
+  "patch": ""
+},{
+  "enabled": 1, "name": "libglib", "deps":["cross_compiler"],
+  "conflic": [], "args": {},
+  "group": ["gui"],
+  "patch": ""
+},{
+  "enabled": 1, "name": "libshared-mime-info", "deps":["cross_compiler", "libglib"],
+  "conflic": [], "args": {},
+  "group": ["gui"],
+  "patch": ""
+},{
+  "enabled": 1, "name": "libtiff", "deps":["debootstrap"],
+  "conflic": [], "args": {},
+  "group": ["lib"],
+  "patch": ""
+},{
+  "enabled": 0, "name": "libgdk", "deps":["cross_compiler", "libglib", "libshared-mime-info", "libtiff"],
+  "conflic": [], "args": {},
+  "group": ["gui"],
+  "patch": ""
+},{
+  "enabled": 1, "name": "test_cairo", "deps":["cross_compiler", "libcairo"],
+  "conflic": [], "args": {},
+  "group": ["test-tool"],
   "patch": ""
 },{
   "enabled": 1, "name": "liblua", "deps":["debootstrap"],
-  "conflic": [], "args": {},
-  "patch": ""
-},{
-  "enabled": 1, "name": "libbdb", "deps":["debootstrap"],
-  "conflic": [], "args": {},
-  "patch": ""
-},{
-  "enabled": 1, "name": "libtokyocabinet", "deps":["debootstrap", "liblua"],
   "conflic": [], "args": {},
   "patch": ""
 },{
@@ -108,28 +166,54 @@
   "conflic": [], "args": {},
   "patch": ""
 },{
+  "enabled": 1, "name": "libgcrypt", "deps":["debootstrap"],
+  "conflic": [], "args": {},
+  "group": ["www"],
+  "patch": ""
+},{
+  "enabled": 1, "name": "libgpg-error", "deps":["debootstrap"],
+  "conflic": [], "args": {},
+  "group": ["www"],
+  "patch": ""
+},{
+  "enabled": 1, "name": "libmicrohttpd", "deps":["debootstrap", "libgcrypt", "libgnutls", "libgpg-error"],
+  "conflic": [], "args": {},
+  "group": ["www"],
+  "patch": ""
+},{
   "enabled": 1, "name": "libiopcmisc", "deps":["cross_compiler", "liblua", "libjsonc"],
   "conflic": [], "args": {},
+  "group":["iopc"],
   "patch": ""
 },{
   "enabled": 1, "name": "libiopcnet", "deps":["cross_compiler", "libiopcmisc"],
   "conflic": [], "args": {},
+  "group":["iopc"],
   "patch": ""
 },{
-  "enabled": 1, "name": "libiopcdao", "deps":["cross_compiler", "libiopcmisc", "libbdb", "libtokyocabinet"],
+  "enabled": 1, "name": "libiopcdao", "deps":["cross_compiler", "libiopcmisc"],
   "conflic": [], "args": {},
+  "group":["iopc"],
   "patch": ""
 },{
-  "enabled": 1, "name": "libiopctask", "deps":["cross_compiler", "libiopcmisc", "libiopcnet"],
+  "enabled": 1, "name": "libiopccmd", "deps":["cross_compiler", "libiopcmisc", "libiopcdao"],
   "conflic": [], "args": {},
+  "group":["iopc"],
+  "patch": ""
+},{
+  "enabled": 1, "name": "libiopctask", "deps":["cross_compiler", "libiopcmisc", "libiopcnet", "libiopccmd", "libmicrohttpd"],
+  "conflic": [], "args": {},
+  "group":["iopc"],
   "patch": ""
 },{
   "enabled": 1, "name": "iopclauncher", "deps":["cross_compiler", "libiopcmisc", "libiopcnet", "libiopcdao", "libiopctask"],
   "conflic": [], "args": {},
+  "group":["iopc"],
   "patch": ""
 },{
-  "enabled": 1, "name": "iopctest", "deps":["cross_compiler", "libiopcmisc", "libiopcnet", "libiopcdao", "libiopctask"],
+  "enabled": 1, "name": "iopctest", "deps":["cross_compiler", "libiopcmisc", "libiopcnet", "libiopcdao"],
   "conflic": [], "args": {},
+  "group":["iopc"],
   "patch": ""
 },{
   "enabled": 0, "name": "xorg", "deps":[],
@@ -142,34 +226,42 @@
 },{
   "enabled": 1, "name": "dropbear", "deps":["cross_compiler", "debootstrap"],
   "conflic": [], "args": {},
+  "group": ["ssh"],
   "patch": "COMMON"
 },{
   "enabled": 1, "name": "host_nodejs", "deps": ["arch_arm"], 
   "conflic": [], "args": {},
+  "group": ["build_tool"],
   "patch": ""
 },{
   "enabled": 1, "name": "host_php", "deps": ["arch_arm"], 
   "conflic": [], "args": {},
+  "group": ["build_tool"],
   "patch": ""
 },{
   "enabled": 1, "name": "web_cooking", "deps": ["arch_arm", "host_php", "host_nodejs"], 
   "conflic": [], "args": {"version":"default", "versionOptions":[], "project":"Test"},
+  "group": ["www"],
   "patch": ""
 },{
-  "enabled": 1, "name": "golang", "deps": ["arch_arm"], 
+  "enabled": 0, "name": "golang", "deps": ["arch_arm"], 
   "conflic": [], "args": {},
+  "group": ["build_tool"],
   "patch": ""
 },{
-  "enabled": 1, "name": "go_web_servlet", "deps": ["golang"], 
+  "enabled": 0, "name": "go_web_servlet", "deps": ["golang"], 
   "conflic": [], "args": {},
+  "group": ["www"],
   "patch": ""
 },{
   "enabled": 1, "name": "image_configs", "deps": ["arch_arm"], 
   "conflic": [], "args": {},
+  "group": ["build_tool"],
   "patch": ""
 },{
   "enabled": 1, "name": "image_squashfs", "deps": ["arch_arm"], 
   "conflic": [], "args": {},
+  "group": ["build_tool"],
   "patch": ""
 },{
   "enabled": 0, "name": "", "deps": [], 

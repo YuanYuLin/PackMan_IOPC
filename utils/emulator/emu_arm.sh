@@ -1,16 +1,39 @@
 #!/bin/bash
 
 if [ "$#" == "0" ]; then
-    echo "emu_arm <kernel> <rootfs> <hda> <hdb> <hdc> <hdd>"
+    echo "emu_arm <index> <output bsp folder> <output rootfs folder>"
+    echo "  ex: emu_arm 0 /output/bsp_vpb /output/rootfs_mini"
     exit 1
 fi
 
-LINUX_IMAGE="$1"
-ROOTFS_IMAGE="$2"
-HDA="$3"
-HDB="$4"
-HDC="$5"
-HDD="$6"
+EMU_INDEX="$1"
+OUTPUT_BSP_DIR="$2"
+OUTPUT_ROOTFS_DIR="$3"
+
+case "$EMU_INDEX" in
+"0")
+	NETWORK_TAP="tap0"
+	NET_NUM="1"
+	VNC_NUM="20"
+;;
+"1")
+	NETWROK_TAP="tap1"
+	NET_NUM="2"
+	VNC_NUM="21"
+;;
+*)
+	echo "error index ..."
+	exit 1
+;;
+esac
+
+ROOTFS_IMAGE="$OUTPUT_ROOTFS_DIR/arch_arm/rootfs.squashfs"
+LINUX_IMAGE="$OUTPUT_BSP_DIR/arch_arm/linux_image"
+LINUX_MODULE_IMAGE="$OUTPUT_BSP_DIR/arch_arm/kmod.squashfs"
+HDA="$OUTPUT_BSP_DIR/arch_arm/qemu/hda.img"
+HDB="$OUTPUT_BSP_DIR/arch_arm/qemu/hdb.img"
+HDC="$OUTPUT_BSP_DIR/arch_arm/qemu/hdc.img"
+HDD="$OUTPUT_BSP_DIR/arch_arm/qemu/hdd.img"
 
 IMAGE_HDA="$HDA"
 IMAGE_MNT="/tmp/mnt"
@@ -21,11 +44,13 @@ echo "OFFSET=$OFFSET"
 echo "losetup -o $(($OFFSET*512)) $IMAGE_LOOP $IMAGE_HDA "
 losetup -o $(($OFFSET*512)) $IMAGE_LOOP $IMAGE_HDA 
 mkfs -t vfat $IMAGE_LOOP
-mkdir $IMAGE_MNT
+mkdir -p $IMAGE_MNT
 mount $IMAGE_LOOP $IMAGE_MNT
 
-cp $LINUX_IMAGE $IMAGE_MNT
-cp $ROOTFS_IMAGE $IMAGE_MNT
+cp $LINUX_IMAGE		$IMAGE_MNT
+cp $LINUX_MODULE_IMAGE	$IMAGE_MNT
+cp $ROOTFS_IMAGE	$IMAGE_MNT
+echo "{\"address\":\"192.168.155.$NET_NUM\", \"netmask\":\"255.255.255.0\", \"hostname\":\"qemu$NET_NUM\"}" > "$IMAGE_MNT/extra_cfg.json"
 
 umount $IMAGE_MNT
 losetup -d $IMAGE_LOOP
@@ -40,10 +65,12 @@ MACHINE="-M versatilepb"
 
 KERNEL="-kernel $LINUX_IMAGE"
 HDD="-hda $HDA -hdb $HDB -hdc $HDC -hdd $HDD"
-NETDEV="-net nic -net tap,ifname=tap0,script=no,downscript=no"
+#NETDEV="-net nic -net tap,ifname=$NETWORK_TAP,script=no,downscript=no"
+NETDEV="-net nic,macaddr=52:54:01:23:45:0$NET_NUM -net tap,ifname=tap$NET_NUM,script=no,downscript=no"
+#NETDEV="-net nic -net tap,id=net$NET_NUM,ifname=br0net$NET_NUM,script=no"
 #NETDEV="-netdev tap,id=tap0"
-GRAPHIC="-vnc 0:0"
-OPTS="-m 256"
+GRAPHIC="-vnc :$VNC_NUM"
+OPTS="-m 64"
 #OPTS=""
 
 BOOT_PARAMS="BOOT_DELAY=1 BOOT_DEV=/dev/sda1 BOOT_ROOTFS=rootfs.squashfs"

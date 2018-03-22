@@ -44,7 +44,7 @@
   "patch": ""
 },{
   "enabled": 1, "name": "linux", "deps": ["cross_compiler"], 
-  "conflic": [], "args": {"version":"linux-4.1.42", "config":"armel_bbbw_4.1.42", "format":"uImage"},
+  "conflic": [], "args": {"version":"4.1.42", "config":"armel_bbbw_4.1.42", "format":"uImage"},
   "patch": ""
 },{
   "enabled": 0, "name": "bzimage_initramfs", "deps": ["arch_arm"], 
