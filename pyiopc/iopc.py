@@ -202,6 +202,7 @@ def installPkg(pkg_name):
         if obj in ["include"]:
             print "install include" + full_path
             ops.path_join(full_path, ".")
+            ops.mkdir(sdk_include)
             ops.sudo_copyto(ops.path_join(full_path, "."), sdk_include)
             #for root, dirnames, filenames in os.walk(full_path):
             #    for f_obj in filenames:
