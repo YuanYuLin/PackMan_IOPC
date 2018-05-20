@@ -1,4 +1,4 @@
-Folder structure:
+- Folder structure:
 
 1. Package name
  * <package_name>:				args['pkg_name']
@@ -19,3 +19,21 @@ Folder structure:
  * output/<package_arch>/sdkstage/usr/lib:	iopc.getSdkLib()
  * output/<package_arch>/sdkstage/pkgconfig:	iopc.getSdkPkgConfig()
 
+- Image layout
+GPT: reserved 1048576 bytes for partitions
+MBR: reserved 512     bytes for partitions
+
+ ------------------ 0
+ |  MBR
+ ------------------ 512
+ |
+ |  GPT
+ |
+ ------------------1048576
+ |  IOPC HEADER
+ ------------------1114112
+ |  IOPC DAO
+ ------------------N
+ |  Partitions
+ |
+ |

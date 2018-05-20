@@ -23,6 +23,11 @@
   "group": ["build_tool"],
   "patch": ""
 },{
+  "enabled": 1, "name": "platform_iopc_vpb", "deps": ["arch_arm"], 
+  "conflic": [], "args": {},
+  "group": ["configs"],
+  "patch": ""
+},{
   "enabled": 1, "name": "debootstrap", "deps": ["arch_arm"], 
   "conflic": [], "args": {"version":"debian_jessie_armel_minbase.tar.xz", "versionOptions":["debian_jessie_armel.tar.xz", "debian_jessie_armel_minbase.tar.xz", "debian_jessie_armhf.tar.xz"]},
   "group": ["build_tool", "base"],
@@ -33,9 +38,14 @@
   "group": ["base"],
   "patch": ""
 },{
-  "enabled": 1, "name": "finit", "deps": ["cross_compiler"], 
+  "enabled": 0, "name": "finit", "deps": ["cross_compiler"], 
   "conflic": [], "args": {},
   "group": ["base"],
+  "patch": "COMMON"
+},{
+  "enabled": 1, "name": "e2fsprogs", "deps": ["cross_compiler"], 
+  "conflic": [], "args": {},
+  "group": ["utils"],
   "patch": "COMMON"
 },{
   "enabled": 1, "name": "libcap", "deps":["debootstrap"], 
@@ -95,7 +105,7 @@
 },{
   "enabled": 1, "name": "libp11", "deps":["libffi"], 
   "conflic": [], "args": {},
-  "group":["lxc"],
+  "group": ["lxc"],
   "patch": ""
 },{
   "enabled": 1, "name": "libz", "deps":["debootstrap"], 
@@ -118,32 +128,32 @@
   "group": ["drbd"],
   "patch": ""
 },{
-  "enabled": 1, "name": "libpixman", "deps":["cross_compiler"],
+  "enabled": 0, "name": "libpixman", "deps":["cross_compiler"],
   "conflic": [], "args": {},
   "group": ["gui"],
   "patch": ""
 },{
-  "enabled": 1, "name": "libcairo", "deps":["cross_compiler", "libpixman"],
+  "enabled": 0, "name": "libcairo", "deps":["cross_compiler", "libpixman"],
   "conflic": [], "args": {},
   "group": ["gui"],
   "patch": ""
 },{
-  "enabled": 1, "name": "libxml2", "deps":["cross_compiler"],
+  "enabled": 0, "name": "libxml2", "deps":["cross_compiler"],
   "conflic": [], "args": {},
   "group": ["gui"],
   "patch": ""
 },{
-  "enabled": 1, "name": "libglib", "deps":["cross_compiler"],
+  "enabled": 0, "name": "libglib", "deps":["cross_compiler"],
   "conflic": [], "args": {},
   "group": ["gui"],
   "patch": ""
 },{
-  "enabled": 1, "name": "libshared-mime-info", "deps":["cross_compiler", "libglib"],
+  "enabled": 0, "name": "libshared-mime-info", "deps":["cross_compiler", "libglib"],
   "conflic": [], "args": {},
   "group": ["gui"],
   "patch": ""
 },{
-  "enabled": 1, "name": "libtiff", "deps":["debootstrap"],
+  "enabled": 0, "name": "libtiff", "deps":["debootstrap"],
   "conflic": [], "args": {},
   "group": ["lib"],
   "patch": ""
@@ -153,12 +163,12 @@
   "group": ["gui"],
   "patch": ""
 },{
-  "enabled": 1, "name": "test_cairo", "deps":["cross_compiler", "libcairo"],
+  "enabled": 0, "name": "test_cairo", "deps":["cross_compiler", "libcairo"],
   "conflic": [], "args": {},
   "group": ["test-tool"],
   "patch": ""
 },{
-  "enabled": 1, "name": "liblua", "deps":["debootstrap"],
+  "enabled": 0, "name": "liblua", "deps":["debootstrap"],
   "conflic": [], "args": {},
   "patch": ""
 },{
@@ -266,6 +276,7 @@
 },{
   "enabled": 0, "name": "", "deps": [], 
   "conflic": [], "args": {},
+  "group": [],
   "patch": ""
 }
 ],

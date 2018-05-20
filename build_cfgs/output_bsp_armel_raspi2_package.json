@@ -6,6 +6,7 @@
 [
 {"enabled": 1, "env": {"ARCH_ALT" : "armel"} },
 {"enabled": 1, "env": {"DO_DEBOOTSTRAP" : "N"} },
+{"enabled": 1, "env": {"BUILD_JOBS_COUNT" : "3"} },
 {"enabled": 0, "env": {"" : ""} }
 ],
 "packages": 

@@ -20,6 +20,10 @@
   "conflic": [], "args": {"version":"iopc_gcc_armel_2017.02.3", "versionOptions":["CodeSourcery-2014.05", "Linaro-2017.01", "iopc_gcc_armel_2017.02.3"]},
   "patch": ""
 },{
+  "enabled": 1, "name": "platform_iopc_vpb", "deps": ["arch_arm"], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
   "enabled": 1, "name": "uboot", "deps": ["cross_compiler"], 
   "conflic": [], "args": {"version":"armel_raspi2"},
   "patch": ""

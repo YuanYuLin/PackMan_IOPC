@@ -2,7 +2,7 @@
 
 if [ "$#" == "0" ]; then
     echo "emu_arm <index> <output bsp folder> <output rootfs folder>"
-    echo "  ex: emu_arm 0 /output/bsp_vpb /output/rootfs_mini"
+    echo "  usage: emu_xxx 0 /output/bsp_vpb /outpu/rootfs_mini"
     exit 1
 fi
 
@@ -27,52 +27,30 @@ case "$EMU_INDEX" in
 ;;
 esac
 
-ROOTFS_IMAGE="$OUTPUT_ROOTFS_DIR/arch_arm/rootfs.squashfs"
 LINUX_IMAGE="$OUTPUT_BSP_DIR/arch_arm/linux_image"
-LINUX_MODULE_IMAGE="$OUTPUT_BSP_DIR/arch_arm/kmod.squashfs"
+DTB_IMAGE="/data/PackMan_IOPC/packages/buildroot/buildroot-2017.02.3/output/images/versatile-pb.dtb"
+
 HDA="$OUTPUT_BSP_DIR/arch_arm/qemu/hda.img"
 HDB="$OUTPUT_BSP_DIR/arch_arm/qemu/hdb.img"
 HDC="$OUTPUT_BSP_DIR/arch_arm/qemu/hdc.img"
 HDD="$OUTPUT_BSP_DIR/arch_arm/qemu/hdd.img"
 
-IMAGE_HDA="$HDA"
-IMAGE_MNT="/tmp/mnt"
-IMAGE_LOOP="/dev/loop7"
-OFFSET=`fdisk $IMAGE_HDA -l | grep "hda.img1" | awk '{ print  $3 }'`
-
-echo "OFFSET=$OFFSET"
-echo "losetup -o $(($OFFSET*512)) $IMAGE_LOOP $IMAGE_HDA "
-losetup -o $(($OFFSET*512)) $IMAGE_LOOP $IMAGE_HDA 
-mkfs -t vfat $IMAGE_LOOP
-mkdir -p $IMAGE_MNT
-mount $IMAGE_LOOP $IMAGE_MNT
-
-cp $LINUX_IMAGE		$IMAGE_MNT
-cp $LINUX_MODULE_IMAGE	$IMAGE_MNT
-cp $ROOTFS_IMAGE	$IMAGE_MNT
-echo "{\"address\":\"192.168.155.$NET_NUM\", \"netmask\":\"255.255.255.0\", \"hostname\":\"qemu$NET_NUM\"}" > "$IMAGE_MNT/extra_cfg.json"
-
-umount $IMAGE_MNT
-losetup -d $IMAGE_LOOP
-
-WORKING_DIR=`dirname $0`
-#HDA="$WORKING_DIR/hdd/hda"
-#HDB="$WORKING_DIR/hdd/hdb"
-#HDC="$WORKING_DIR/hdd/hdc"
-
 QEMU="qemu-system-arm"
 MACHINE="-M versatilepb"
 
 KERNEL="-kernel $LINUX_IMAGE"
+#DTB="-dtb $DTB_IMAGE"
+DTB=""
 HDD="-hda $HDA -hdb $HDB -hdc $HDC -hdd $HDD"
 #NETDEV="-net nic -net tap,ifname=$NETWORK_TAP,script=no,downscript=no"
 NETDEV="-net nic,macaddr=52:54:01:23:45:0$NET_NUM -net tap,ifname=tap$NET_NUM,script=no,downscript=no"
 #NETDEV="-net nic -net tap,id=net$NET_NUM,ifname=br0net$NET_NUM,script=no"
 #NETDEV="-netdev tap,id=tap0"
-GRAPHIC="-vnc :$VNC_NUM"
-OPTS="-m 64"
+GRAPHIC="-nographic -vnc :$VNC_NUM -vga std"
+OPTS="-m 128"
 #OPTS=""
 
-BOOT_PARAMS="BOOT_DELAY=1 BOOT_DEV=/dev/sda1 BOOT_ROOTFS=rootfs.squashfs"
+BOOT_PARAMS="BOOT_DELAY=1 BOOT_DEV=/dev/sda BOOT_DEV_PART=1 BOOT_ROOTFS=rootfs.squashfs"
 
-$QEMU $MACHINE $KERNEL $HDD $GRAPHIC $OPTS $INITRD $NETDEV -nographic -append "console=ttyAMA0,115200 init=/bin/sh $BOOT_PARAMS"
+echo $QEMU $MACHINE $KERNEL $HDD $GRAPHIC $OPTS $INITRD $NETDEV -append "console=ttyAMA0,115200 init=/bin/sh $BOOT_PARAMS"
+$QEMU $MACHINE $KERNEL $DTB $HDD $GRAPHIC $OPTS $INITRD $NETDEV -append "console=ttyAMA0,115200 init=/bin/sh $BOOT_PARAMS"

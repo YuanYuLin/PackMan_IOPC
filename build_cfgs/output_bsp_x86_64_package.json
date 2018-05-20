@@ -6,6 +6,7 @@
 [
 {"enabled": 1, "env": {"ARCH_ALT" : "x86_64"} },
 {"enabled": 1, "env": {"DO_DEBOOTSTRAP" : "N"} },
+{"enabled": 1, "env": {"BUILD_JOBS_COUNT" : "3"} },
 {"enabled": 0, "env": {"" : ""} }
 ],
 "packages": 
@@ -23,10 +24,6 @@
   "conflic": [], "args": {"version":"busybox-1.25.1", "config":"initramfs"},
   "patch": ""
 },{
-  "enabled": 0, "name": "finit", "deps": ["cross_compiler"], 
-  "conflic": [], "args": {},
-  "patch": ""
-},{
   "enabled": 1, "name": "initramfs_pristine", "deps": ["cross_compiler"], 
   "conflic": [], "args": {},
   "patch": ""
@@ -40,11 +37,36 @@
   "patch": ""
 },{
   "enabled": 1, "name": "linux", "deps": ["cross_compiler"], 
-  "conflic": [], "args": {"version":"4.1.42", "config":"x86_64_qemu", "format":"zImage"},
+  "conflic": [], "args": {"version":"4.1.42", "config":"x86_64_qemu_4.1.42", "format":"zImage"},
+  "patch": ""
+},{
+  "enabled": 1, "name": "linux_modules_hello", "deps": ["cross_compiler", "linux"], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "linux_modules_core_gpio", "deps": ["cross_compiler", "linux"], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "linux_modules_hw_gpio_dummy", "deps": ["cross_compiler", "linux", "linux_modules_core_gpio"], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "image_kmod_squashfs", "deps": ["linux"], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "qemu_hdd", "deps": ["cross_compiler"], 
+  "conflic": [], "args": {},
   "patch": ""
 },{
   "enabled": 0, "name": "bzimage_initramfs", "deps": ["arch_arm"], 
   "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "grub", "deps": ["cross_compiler"], 
+  "conflic": [], "args": {},
+  "group": ["bootloader"],
   "patch": ""
 },{
   "enabled": 0, "name": "", "deps": [], 
