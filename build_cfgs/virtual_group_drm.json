@@ -1,0 +1,47 @@
+{
+"DEBUG": false,
+"name": "packages",
+"packages_dir": "packages",
+"envs": 
+[
+{"enabled": 0, "env": {"" : ""} }
+],
+
+"packages": 
+[
+{
+  "enabled": 1, 
+  "name": "libxml2", 
+  "deps":["cross_compiler"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1, 
+  "name": "libexpat", 
+  "deps":["debootstrap"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1,
+  "name": "libpciaccess",
+  "deps":["cross_compiler"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1, 
+  "name": "libdrm", 
+  "deps":["cross_compiler", "libxml2", "libexpat"],
+  "opts":["libpciaccess"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 0, 
+  "name": "", 
+  "deps": [], 
+  "args": {},
+  "patch": ""
+}
+],
+"version": "1.0.0"
+}
+

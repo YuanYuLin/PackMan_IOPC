@@ -14,6 +14,7 @@ def buildModule(pkg_enabled, pkg_name, pkg_args, local_repo_path, output_path):
             build_pkg = ops.loadModule(pkg_name, iopc.PACKAGE_CFG, [local_repo_path])
             args = {"pkg_name": pkg_name, "pkg_path": local_repo_path, "output_path": output_path, "pkg_args": pkg_args}
             build_pkg.MAIN_ENV(args)
+            iopc.add_selected_package(pkg_name)
         else:
             print local_repo_path + " Not exist!"
 

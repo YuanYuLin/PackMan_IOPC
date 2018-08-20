@@ -3,6 +3,7 @@ import tempfile
 import re
 import os
 import sys
+from bottle import SimpleTemplate
 
 PACKAGE_CFG="/Package/CONFIG"
 MAX_FILE_SIZE = (99 * 1024 *1024)
@@ -167,10 +168,18 @@ def make_initramfs(workspace, output_dir, initramfs_file='root_initramfs.cpio.gz
     if res[2] != 0:
         print res[1]
 
-def make_squashfs(workspace, output_dir, squashfs_name):
+def make_squashfs_lzo(workspace, output_dir, squashfs_name):
     output_file = ops.path_join(output_dir, squashfs_name)
     ops.rm_file(output_file)
     CMD=['sudo', 'mksquashfs', workspace, output_file, '-noappend', '-all-root', '-comp', 'lzo']
+    res = ops.execCmd(CMD, output_dir, False, None)
+    if res[2] != 0:
+        print res[1]
+
+def make_squashfs_xz(workspace, output_dir, squashfs_name):
+    output_file = ops.path_join(output_dir, squashfs_name)
+    ops.rm_file(output_file)
+    CMD=['sudo', 'mksquashfs', workspace, output_file, '-noappend', '-all-root', '-comp', 'xz']
     res = ops.execCmd(CMD, output_dir, False, None)
     if res[2] != 0:
         print res[1]
@@ -189,6 +198,16 @@ def installBin(pkg_name, bin_obj, dst):
     full_dst = ops.path_join(bin_pkg_path, dst)
     ops.mkdir(full_dst)
     ops.sudo_copyto(bin_obj, full_dst)
+
+def savePkgConfigByFile(pkgcfg_filein, pkgcfg_fileout):
+    print ops.getEnv("SDKSTAGE")
+    print pkgcfg_filein
+    tmpl = SimpleTemplate(name=pkgcfg_filein)
+    output = tmpl.render({'SDKSTAGE':ops.getEnv("SDKSTAGE")})
+    with open(pkgcfg_fileout, 'w') as fd:
+        fd.write(output)
+    fd.close()
+    return output
 
 def installPkg(pkg_name):
     print "===>install Pkg" + pkg_name
@@ -210,8 +229,10 @@ def installPkg(pkg_name):
             continue
         if obj in ["pkgconfig"]:
             print "install pkgconfig " + full_path
-            ops.path_join(full_path, ".")
-            ops.sudo_copyto(ops.path_join(full_path, "."), sdk_pkgconfig)
+            for root, dirnames, filenames in os.walk(full_path):
+                for f_obj in filenames:
+                    if f_obj.endswith(".pc"):
+                        savePkgConfigByFile(ops.path_join(root, f_obj), ops.path_join(sdk_pkgconfig, f_obj))
             continue
         if obj in ["Package", ".git", "LICENSE", ".gitignore"]:
             continue
@@ -367,4 +388,22 @@ def unlink_split_data(workspace, info):
 
     print "delete file", info['info_name']
     os.unlink(ops.path_join(workspace, info['info_name']))
+
+def is_selected_package(pkg_name):
+    supported_pkgs = ops.getEnv("SUPPORTED_PKGS")
+    pkg_real_name = ":" + pkg_name + ":"
+    print supported_pkgs
+    if pkg_real_name in supported_pkgs:
+        return True
+    return False
+
+def add_selected_package(pkg_name):
+    supported_pkgs = ""
+    try:
+        supported_pkgs = ops.getEnv("SUPPORTED_PKGS") 
+        print supported_pkgs
+    except:
+        supported_pkgs = ""
+
+    ops.exportEnv(ops.setEnv("SUPPORTED_PKGS", supported_pkgs + ":" + pkg_name + ":"))
 

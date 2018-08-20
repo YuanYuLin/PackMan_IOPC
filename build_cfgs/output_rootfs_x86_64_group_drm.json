@@ -7,17 +7,14 @@
 {"enabled": 1, "env": {"ARCH_ALT" : "x86_64"} },
 {"enabled": 1, "env": {"DO_DEBOOTSTRAP" : "N"} },
 {"enabled": 1, "env": {"BUILD_JOBS_COUNT" : "3"} },
-{"enabled": 1, "env": {"INSTALL_TEST_UTILS": "n"} },
-{"enabled": 1, "env": {"INSTALL_PLATFORM_DAO": "y"} },
+{"enabled": 1, "env": {"INSTALL_TEST_UTILS": "y"} },
 {"enabled": 0, "env": {"" : ""} }
 ],
 
 "packages": 
 [
 {
-  "enabled": 1, 
-  "name": "arch_arm", 
-  "deps": [], 
+  "enabled": 1, "name": "arch_arm", "deps": [], 
   "args": {},
   "patch": ""
 },{
@@ -72,6 +69,12 @@
   "enabled": 1, 
   "name": "libiopcdao", 
   "deps":["cross_compiler", "libiopcmisc", "libz"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1, 
+  "name": "libiopccmd", 
+  "deps":["cross_compiler", "libiopcmisc", "libiopcdao"],
   "args": {},
   "patch": ""
 },{
@@ -147,122 +150,33 @@
   "args": {},
   "patch": ""
 },{
-  "enabled": 1,
-  "name": "libpcre3",
-  "deps":["debootstrap"],
-  "args": {},
-  "patch": ""
-},{
-  "enabled": 1,
-  "name": "libselinux",
-  "deps":["debootstrap", "libpcre3"],
-  "args": {},
-  "patch": ""
-},{
-  "enabled": 1,
-  "name": "libapparmor",
-  "deps":["debootstrap"],
-  "args": {},
-  "patch": ""
-},{
-  "enabled": 1,
-  "name": "libcap",
-  "deps":["debootstrap"],
-  "args": {},
-  "patch": ""
-},{
-  "enabled": 1,
-  "name": "libseccomp",
-  "deps":["debootstrap"],
-  "args": {},
-  "patch": ""
-},{
-  "enabled": 1,
-  "name": "lxc",
-  "deps":["libgnutls", "libselinux", "libapparmor", "libcap", "libseccomp"],
-  "args": {},
-  "patch": ""
-},{
-  "enabled": 1, 
-  "name": "libiopcrfb", 
-  "deps":["cross_compiler"],
-  "args": {},
-  "patch": ""
-},{
-  "enabled": 1, 
-  "name": "libiopccmd", 
-  "deps":["cross_compiler", "libiopcmisc", "libiopcdao", "libiopcnet"],
-  "opts":["lxc", "libiopcrfb"],
-  "args": {},
-  "patch": ""
-},{
-  "enabled": 1,
-  "name": "libxml2",
-  "deps":["cross_compiler"],
-  "args": {},
-  "patch": ""
-},{
-  "enabled": 1,
-  "name": "libexpat",
-  "deps":["debootstrap"],
-  "args": {},
-  "patch": ""
-},{
-  "enabled": 1, 
-  "name": "libpciaccess", 
-  "deps":["cross_compiler"],
-  "args": {},
-  "patch": ""
-},{
-  "enabled": 1, 
-  "name": "libdrm", 
-  "deps":["cross_compiler", "libxml2", "libexpat"],
-  "opts":["libpciaccess"],
-  "args": {},
-  "patch": ""
-},{
-  "enabled": 1, 
-  "name": "libiopcdrm", 
-  "deps":["cross_compiler", "libdrm"],
-  "args": {},
-  "patch": ""
-},{
   "enabled": 1, 
   "name": "libiopctask", 
   "deps":["cross_compiler", "libiopcmisc", "libiopcnet", "libiopccmd", "libmicrohttpd"],
-  "opts":["libiopcrfb", "libiopcdrm"],
   "args": {},
   "patch": ""
 },{
   "enabled": 1, 
   "name": "iopclauncher", 
   "deps":["cross_compiler", "libiopcmisc", "libiopcnet", "libiopcdao", "libiopctask"],
-  "opts":["libiopcdrm", "libiopcrfb"],
   "args": {},
   "patch": ""
 },{
-  "enabled": 1,
-  "name": "libglib",
-  "deps":["cross_compiler", "libpcre3"],
-  "args": {},
-  "patch": ""
-},{
-  "enabled": 1,
-  "name": "libpixman",
+  "enabled": 1, 
+  "name": "libxml2", 
   "deps":["cross_compiler"],
   "args": {},
   "patch": ""
 },{
   "enabled": 1, 
-  "name": "qemu",
-  "deps":["cross_compiler", "libz", "libglib", "libpcre3", "libpixman", "libxml2"],
+  "name": "libexpat", 
+  "deps":["debootstrap"],
   "args": {},
-  "patch": "COMMON"
+  "patch": ""
 },{
   "enabled": 1, 
-  "name": "iopctest", 
-  "deps":["cross_compiler"],
-  "ops":["libiopcrfb", "libiopcdrm"],
+  "name": "libdrm", 
+  "deps":["cross_compiler", "libxml2", "libexpat"],
   "args": {},
   "patch": ""
 },{

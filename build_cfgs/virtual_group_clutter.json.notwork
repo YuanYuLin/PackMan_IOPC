@@ -1,0 +1,41 @@
+{
+"DEBUG": false,
+"name": "packages",
+"packages_dir": "packages",
+"envs": 
+[
+{"enabled": 0, "env": {"" : ""} }
+],
+
+"packages": 
+[
+{
+  "enabled": 1, "name": "libffi", "deps":["debootstrap"], 
+  "conflic": [], "args": {},
+  "group": ["lxc"],
+  "patch": ""
+},{
+  "enabled": 1, "name": "libz", "deps":["debootstrap"], 
+  "conflic": [], "args": {},
+  "group": ["lxc"],
+  "patch": ""
+},{
+  "enabled": 1, "name": "libglib", "deps":["cross_compiler", "libz", "libffi"],
+  "conflic": [], "args": {},
+  "group": ["gui"],
+  "patch": ""
+},{
+  "enabled": 1, "name": "libclutter", "deps":["cross_compiler", "libglib"],
+  "conflic": [], "args": {},
+  "group": ["gui"],
+  "patch": ""
+},{
+  "enabled": 0, "name": "", "deps": [], 
+  "conflic": [], "args": {},
+  "group": [],
+  "patch": ""
+}
+],
+"version": "1.0.0"
+}
+

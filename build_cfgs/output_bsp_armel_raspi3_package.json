@@ -4,11 +4,9 @@
 "packages_dir": "packages",
 "envs": 
 [
-{"enabled": 1, "env": {"ARCH_ALT" : "x86_64"} },
+{"enabled": 1, "env": {"ARCH_ALT" : "armel"} },
 {"enabled": 1, "env": {"DO_DEBOOTSTRAP" : "N"} },
 {"enabled": 1, "env": {"BUILD_JOBS_COUNT" : "3"} },
-{"enabled": 1, "env": {"INSTALL_TEST_UTILS": "n"} },
-{"enabled": 1, "env": {"INSTALL_PLATFORM_DAO": "n"} },
 {"enabled": 0, "env": {"" : ""} }
 ],
 "packages": 
@@ -19,19 +17,23 @@
   "patch": ""
 },{
   "enabled": 1, "name": "cross_compiler", "deps": ["arch_arm"],
-  "conflic": [], "args": {"version":"iopc_gcc_x86_64_2017.02.3", "versionOptions":[]},
+  "conflic": [], "args": {"version":"iopc_gcc_armel_2017.02.3", "versionOptions":["CodeSourcery-2014.05", "Linaro-2017.01", "iopc_gcc_armel_2017.02.3"]},
   "patch": ""
 },{
-  "enabled": 1, "name": "platform_iopc_qemu64", "deps": ["arch_arm"], 
+  "enabled": 1, "name": "platform_iopc_rpi3", "deps": ["arch_arm"], 
   "conflic": [], "args": {},
   "patch": ""
 },{
-  "enabled": 0, "name": "uboot", "deps": ["cross_compiler"], 
-  "conflic": [], "args": {"version":"x86_64_qemu"},
+  "enabled": 1, "name": "uboot", "deps": ["cross_compiler"], 
+  "conflic": [], "args": {"version":"armel_raspi2"},
   "patch": ""
 },{
   "enabled": 1, "name": "busybox", "deps": ["cross_compiler"], 
   "conflic": [], "args": {"version":"busybox-1.25.1", "config":"initramfs"},
+  "patch": ""
+},{
+  "enabled": 0, "name": "finit", "deps": ["cross_compiler"], 
+  "conflic": [], "args": {},
   "patch": ""
 },{
   "enabled": 1, "name": "initramfs_pristine", "deps": ["cross_compiler"], 
@@ -47,30 +49,14 @@
   "patch": ""
 },{
   "enabled": 1, "name": "linux", "deps": ["cross_compiler"], 
-  "conflic": [], "args": {"version":"4.1.42", "config":"x86_64_qemu_4.1.42", "format":"zImage"},
-  "patch": ""
+  "conflic": [], "args": {"version":"4.1.42", "config":"armel_raspi3_4.1.42", "format":"zImage"},
+  "patch": "IOPC_RPI3_4.1.42"
 },{
   "enabled": 1, "name": "linux_modules_hello", "deps": ["cross_compiler", "linux"], 
   "conflic": [], "args": {},
   "patch": ""
 },{
-  "enabled": 1, "name": "linux_modules_core_gpio", "deps": ["cross_compiler", "linux"], 
-  "conflic": [], "args": {},
-  "patch": ""
-},{
-  "enabled": 1, "name": "linux_modules_hw_gpio_dummy", "deps": ["cross_compiler", "linux", "linux_modules_core_gpio"], 
-  "conflic": [], "args": {},
-  "patch": ""
-},{
-  "enabled": 1, "name": "linux_modules_inputs", "deps": ["cross_compiler", "linux"], 
-  "conflic": [], "args": {},
-  "patch": ""
-},{
   "enabled": 1, "name": "image_kmod_squashfs", "deps": ["linux"], 
-  "conflic": [], "args": {},
-  "patch": ""
-},{
-  "enabled": 1, "name": "qemu_hdd", "deps": ["cross_compiler"], 
   "conflic": [], "args": {},
   "patch": ""
 },{

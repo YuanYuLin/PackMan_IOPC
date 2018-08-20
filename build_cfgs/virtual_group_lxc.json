@@ -1,0 +1,112 @@
+{
+"DEBUG": false,
+"name": "packages",
+"packages_dir": "packages",
+"envs": 
+[
+{"enabled": 0, "env": {"" : ""} }
+],
+
+"packages": 
+[
+{
+  "enabled": 1, 
+  "name": "libcap", 
+  "deps":["debootstrap"], 
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1, 
+  "name": "libapparmor", 
+  "deps":["debootstrap"], 
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1, 
+  "name": "libpcre3", 
+  "deps":["debootstrap"], 
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1, 
+  "name": "libselinux", 
+  "deps":["debootstrap", "libpcre3"], 
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1, 
+  "name": "libseccomp", 
+  "deps":["debootstrap"], 
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1, 
+  "name": "libunbound", 
+  "deps":["debootstrap"], 
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1, 
+  "name": "libgmp10", 
+  "deps":["debootstrap"], 
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1, 
+  "name": "libnettle", 
+  "deps":["debootstrap"], 
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1, 
+  "name": "libidn11", 
+  "deps":["debootstrap"], 
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1, 
+  "name": "libtasn1", 
+  "deps":["debootstrap"], 
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1, 
+  "name": "libffi", 
+  "deps":["debootstrap"], 
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1, 
+  "name": "libp11", 
+  "deps":["libffi"], 
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1, 
+  "name": "libz", 
+  "deps":["debootstrap"], 
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1, 
+  "name": "libgnutls", 
+  "deps":["libz", "libp11", "libtasn1", "libidn11", "libnettle", "libgmp10", "libunbound"], 
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1, 
+  "name": "lxc", 
+  "deps":["libgnutls", "libselinux", "libapparmor", "libcap", "libseccomp"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 0, 
+  "name": "", 
+  "deps": [], 
+  "args": {},
+  "patch": ""
+}
+],
+"version": "1.0.0"
+}
+

@@ -1,0 +1,31 @@
+#!/bin/sh
+
+QEMU1="qemu-system-x86_64 -M q35 -enable-kvm -cpu host -realtime mlock=off"
+QEMU2="-uuid 20180801-0000-0000-0000-000000000000"
+QEMU3="-m 1024"
+QEMU4="–drive file=/hdd/sdd/debian.sys.qcow2,format=qcow2,if=none,id=drive-disk-virtio-00"
+QEMU4_1="-device virtio-blk-pci,scsi=off,bus=pci.0,addr=0x2,drive=drive-disk-virtio-00,id=disk-virtio-00,bootindex=1"
+
+QEMU5="-netdev type=tap,script=/tmp/qemu-ifup,id=netdev-net-virtio-00"
+QEMU5_1="-device virtio-net-pci,netdev=netdev-net-virtio-00,id=net-virtio-00,mac=00:20:18:08:03:00,bus=pci.0,addr=0x3"
+
+QEMU="$QEMU1 $QEMU2 $QEMU3 $QEMU4 $QEMU4_1 $QEMU5 $QEMU5_1"
+echo $QEMU
+$QEMU
+
+#!/bin/sh
+
+QEMU1="qemu-system-x86_64 -M q35 -realtime mlock=off -no-user-config -nodefaults"
+QEMU2="-uuid 20180801-0000-0000-0000-000000000000"
+QEMU3="-m 384 -cdrom /hdd/sdd/debian-mac-9.5.0-amd64-netinst.iso -vnc :0 -vga std"
+QEMU4="-device virtio-balloon-pci,id=balloon0 -msg timestamp=on"
+QEMUA1="–drive file=/hdd/sdd/debian.sys.qcow2,format=qcow2,if=none,id=drive-disk-virtio-00"
+QEMUA1_1="-device virtio-blk-pci,scsi=off,drive=drive-disk-virtio-00,id=disk-virtio-00,bootindex=1"
+
+QEMUA2="-netdev tap,script=/tmp/qemu-ifup,id=netdev-net-virtio-00"
+QEMUA2_1="-device virtio-net-pci,netdev=netdev-net-virtio-00,id=net-virtio-00,mac=00:20:18:08:03:00"
+
+QEMU="$QEMU1 $QEMU2 $QEMU3 $QEMU4 $QEMUA1 $QEMUA1_1 $QEMUA2 $QEMUA2_1"
+echo $QEMU
+$QEMU
+

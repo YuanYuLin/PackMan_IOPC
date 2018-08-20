@@ -29,8 +29,8 @@ MBR: reserved 512     bytes for partitions
  |
  |  GPT
  |
- ------------------1048576
- |  IOPC HEADER
+ ------------------1048576 - 1M
+ |  IOPC HEADER            - 64K
  ------------------1114112
  |  IOPC DAO
  ------------------N

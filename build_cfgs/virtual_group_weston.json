@@ -1,0 +1,146 @@
+{
+"DEBUG": false,
+"name": "packages",
+"packages_dir": "packages",
+"envs": 
+[
+{"enabled": 0, "env": {"" : ""} }
+],
+
+"packages": 
+[
+{
+  "enabled": 1, 
+  "name": "libexpat", 
+  "deps":["debootstrap"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1, 
+  "name": "libxml2", 
+  "deps":["cross_compiler"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1, 
+  "name": "wayland", 
+  "deps":["cross_compiler", "libffi", "libexpat", "libxml2"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1, 
+  "name": "wayland_protocols", 
+  "deps":["cross_compiler", "libffi", "libexpat", "libxml2"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1, 
+  "name": "libpciaccess", 
+  "deps":["cross_compiler"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1, 
+  "name": "libdrm", 
+  "deps":["cross_compiler"],
+  "opts":["libpciaccess"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1, 
+  "name": "mtdev", 
+  "deps":["cross_compiler"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1, 
+  "name": "libudev", 
+  "deps":["cross_compiler"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1, 
+  "name": "libevdev", 
+  "deps":["cross_compiler"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1, 
+  "name": "libinput", 
+  "deps":["cross_compiler", "mtdev", "libudev", "libevdev"],
+  "args": {},
+  "patch": "COMMON"
+},{
+  "enabled": 1, 
+  "name": "libxkbcommon", 
+  "deps":["cross_compiler", "wayland", "wayland_protocols"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1, 
+  "name": "libpng", 
+  "deps":["cross_compiler"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1, 
+  "name": "libpixman", 
+  "deps":["cross_compiler"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1, 
+  "name": "libpcre3", 
+  "deps":["debootstrap"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1, 
+  "name": "libglib", 
+  "deps":["cross_compiler", "libpcre3"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1, 
+  "name": "mesa", 
+  "deps":["cross_compiler"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1,
+  "name": "freetype",
+  "deps":["cross_compiler"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1,
+  "name": "libuuid",
+  "deps":["debootstrap"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1,
+  "name": "fontconfig",
+  "deps":["cross_compiler", "freetype", "libuuid"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1, 
+  "name": "libcairo", 
+  "deps":["cross_compiler", "mesa", "libpixman", "libpng", "libglib", "libdrm", "fontconfig"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1, 
+  "name": "weston",
+  "deps":["cross_compiler", "libdrm", "libinput", "libxkbcommon", "libcairo", "mesa"],
+  "args": {},
+  "patch": "COMMON"
+}
+],
+"version": "1.0.0"
+}
+],
+"version": "1.0.0"
+}
+
