@@ -37,11 +37,15 @@ def InstallMain(args):
     import iopc_install
     iopc_install.Main(args)
 
+def SdkenvMain(args):
+    import iopc_sdkenv
+    iopc_sdkenv.Main(args)
+
 def AllMain(args):
     cfg = iopc.getCfg(args)
     packages = cfg['packages']
     for pkg in packages:
-        for act in ["ENV", "EXTRACT", "PATCH", "CONFIGURE", "BUILD", "INSTALL"]:
+        for act in ["ENV", "EXTRACT", "PATCH", "CONFIGURE", "BUILD", "INSTALL", "SDKENV"]:
             pkg_enabled = pkg['enabled']
             pkg_name = pkg['name']
             params = [act, pkg_name]
@@ -58,6 +62,7 @@ ActionTable = {
     "CONFIGURE": ConfigureMain,
     "BUILD": BuildMain,
     "INSTALL": InstallMain,
+    "SDKENV" : SdkenvMain,
     "CLEANBUILD": CleanBuildMain,
 }
 

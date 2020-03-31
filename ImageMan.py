@@ -11,11 +11,13 @@ def execmd(cmd):
 
 def help():
     '''
-    print "gen_image.py <layout.json> <dest storage device> <src image type> <output bsp dir> <output rootfs dir>"
-    print "  ex: gen_image.py dao.ini /dev/sdd output_dir output/bsp_armel/arm/arch output/rootfs_armel/arm_arch"
-    print "  <src image type>: "
-    print "        build_dir    - load images from build forlders."
-    print "        http_url     - load images from http url."
+    print "gen_image.py build <layout.json> <dest storage device> <out bins> <output bsp dir> <output rootfs dir>"
+    print "  ex: gen_image.py build dao.ini /dev/sdd output/outbins output/bsp_armel/arm/arch output/rootfs_armel/arm_arch"
+    print "gen_image.py scratch <layout.json> <dest storage device> <output bins>"
+    print "  ex: gen_image.py scratch dao.ini /dev/sdd"
+    print "  <action>:"
+    print "        build        - build from source pool"
+    print "        scratch      - build from scratch files"
     '''
     print "gen_image.py <layout.json> <dest storage device> <output bsp dir> <output rootfs dir>"
     print "  ex: gen_image.py dao.ini /dev/sdd output/bsp_armel/arm/arch output/rootfs_armel/arm_arch"
@@ -53,6 +55,7 @@ def size_to_bytes(size_str):
 
 def create_header(layout_obj):
     header = bytearray('\0' * (64 *1024))
+    '''
     buffers = []
     version = 1
     table_type = str(layout_obj["table_type"])
@@ -80,6 +83,15 @@ def create_header(layout_obj):
         for ch in sec:
             header[idx]=ch
             idx+=1
+    '''
+    header[0]='['
+    header[1]='*'
+    header[2]='I'
+    header[3]='O'
+    header[4]='P'
+    header[5]='C'
+    header[6]='*'
+    header[7]=']'
 
     return header
 
@@ -118,6 +130,8 @@ def gen_grub_cfg(grub_cfg):
         fp.write("insmod all_video\n")
         fp.write("}\n")
 
+        fp.write("set timeout=2\n")
+
         fp.write("menuentry 'IOPC' {\n")
         fp.write("load_video\n")
         fp.write("insmod gzio\n")
@@ -129,7 +143,19 @@ def gen_grub_cfg(grub_cfg):
         fp.write("linux /linux_image root=UUID=%s init=/bin/sh BOOT_DELAY=3 BOOT_DEV=/dev/sda BOOT_DEV_PART=1 BOOT_ROOTFS=rootfs.squashfs BOOT_ON_RAM=y\n" % blkid)
         fp.write("}\n")
 
-def mkfs_and_copy_bins(off_start, storage_dev, bin_files, fstype, bootable):
+def copy_files_to_bins(bsp_dir, rootfs_dir, bins_dir):
+    rst = execmd(['sudo', 'mkdir', '-p', bins_dir])
+    rst = execmd(['sudo', 'cp', '-avr', os.path.join(bsp_dir, 'kmod.squashfs'), bins_dir])
+    rst = execmd(['sudo', 'cp', '-avr', os.path.join(bsp_dir, 'linux_image'), bins_dir])
+    rst = execmd(['sudo', 'cp', '-avr', os.path.join(bsp_dir, 'env.txt'), bins_dir])
+    rst = execmd(['sudo', 'cp', '-avr', os.path.join(rootfs_dir, 'rootfs.squashfs'), bins_dir])
+    rst = execmd(['sudo', 'cp', '-avr', os.path.join(rootfs_dir, 'dao.squashfs'), bins_dir])
+    #rst = execmd(['sudo', 'cp', '-avr', os.path.join(rootfs_dir, 'db_init.bin'), bins_dir])
+    #rst = execmd(['sudo', 'cp', '-avr', os.path.join(rootfs_dir, 'img_header.bin'), bins_dir])
+    rst = execmd(['sudo', 'cp', '-avr', os.path.join(rootfs_dir, 'platform'), bins_dir])
+    rst = execmd(['sudo', 'cp', '-avr', os.path.join(rootfs_dir, 'env.txt'), bins_dir])
+
+def mkfs_and_copy_bins(bins_dir, off_start, storage_dev, bin_files, fstype, bootable):
     part_dev = '/dev/loop7'
     mount_dir = '/mnt'
     mount_boot_dir = '/mnt/boot'
@@ -151,22 +177,19 @@ def mkfs_and_copy_bins(off_start, storage_dev, bin_files, fstype, bootable):
         rst = execmd(['sudo', 'mkdir', '-p', mount_boot_dir])
         #rst = execmd(['sudo', 'blkid', part_dev])
         #rst = execmd(['sudo', 'grub-install', '--no-floppy', '--boot-directory=' + mount_boot_dir, storage_dev])
-        print ['sudo', 'grub-install', '--no-floppy', '--boot-directory=' + mount_boot_dir, storage_dev]
+        #print ['sudo', 'grub-install', '--compress=xz', '--force', '--no-floppy', '--boot-directory=' + mount_boot_dir, storage_dev]
+        print ['sudo', 'grub-install', '--force', '--no-floppy', '--boot-directory=' + mount_boot_dir, storage_dev]
         rst = execmd(['sudo', 'mkdir', '-p', mount_boot_grub_dir])
         gen_grub_cfg("/tmp/grub.cfg")
         rst = execmd(['sudo', 'cp', "/tmp/grub.cfg", mount_boot_grub_dir])
         print "------------------------"
 
     for bin_file in bin_files:
-        if is_file_exist(bin_file, bsp_dir):
-            rst = execmd(['sudo', 'cp', os.path.join(bsp_dir, bin_file), mount_dir])
+        print "* Try to Copy " + os.path.join(bins_dir, bin_file) + " To " + mount_dir
+        if is_file_exist(bin_file, bins_dir):
+            rst = execmd(['sudo', 'cp', os.path.join(bins_dir, bin_file), mount_dir])
             print rst
-            print "* Copy " + os.path.join(bsp_dir, bin_file) + " To " + mount_dir
-            print "------------------------"
-        if is_file_exist(bin_file, rootfs_dir):
-            rst = execmd(['sudo', 'cp', os.path.join(rootfs_dir, bin_file), mount_dir])
-            print rst
-            print "* Copy " + os.path.join(rootfs_dir, bin_file) + " To " + mount_dir
+            print "* Copy " + os.path.join(bins_dir, bin_file) + " To " + mount_dir
             print "------------------------"
 
     execmd(['sudo', 'umount', mount_dir])
@@ -175,28 +198,24 @@ def mkfs_and_copy_bins(off_start, storage_dev, bin_files, fstype, bootable):
 if __name__ == '__main__':
     setLibPath()
     print len(sys.argv)
-    if len(sys.argv) < 5:
+    if len(sys.argv) < 2:
         help()
 
-    bsp_dir = ""
-    rootfs_dir = ""
+    action = sys.argv[1]
+    dao_ini = sys.argv[2]
+    storage_dev = sys.argv[3]
+    bins_dir = sys.argv[4]
 
-    dao_ini = sys.argv[1]
-    storage_dev = sys.argv[2]
-    '''
-    src_type    = sys.argv[3]
-    if src_type == "build_dir":
-        bsp_dir     = sys.argv[4]
-        rootfs_dir  = sys.argv[5]
-    else if src_type == "http_url":
-        bsp_dir     = sys.argv[4]
-        rootfs_dir  = sys.argv[5]
+    if action == "scratch":
+        print "scratch"
+    elif action == "build":
+        print "build"
+        bsp_dir = sys.argv[5]
+        rootfs_dir = sys.argv[6]
+        copy_files_to_bins(bsp_dir, rootfs_dir, bins_dir)
     else:
-        print "Please check your image files."
         sys.exit(1)
-    '''
-    bsp_dir = sys.argv[3]
-    rootfs_dir = sys.argv[4]
+
     config = ConfigParser.ConfigParser()
     config.read(dao_ini)
     layout = config.get('CFG_IMAGE', 'layout')
@@ -213,9 +232,14 @@ if __name__ == '__main__':
 
     execmd(['sudo', 'parted', storage_dev, 'mktable', table_type])
 
+    '''
+    print "Creating header..."
     header_bin = create_header(layout_obj)
+    print "Write to dev", storage_dev
     overwrite_to((1024*1024), header_bin, storage_dev)
+    '''
 
+    print "Creating partition"
     part_index = 0
     parts = layout_obj["parts"]
     for part in parts:
@@ -231,12 +255,8 @@ if __name__ == '__main__':
             off_end = int(fs_end[0:-1],10)
             for bin_file in bin_files:
                 bin_data = None
-                if is_file_exist(bin_file, bsp_dir):
-                    print "in bsp"
-                    bin_data = read_file(bin_file, bsp_dir)
-                if is_file_exist(bin_file, rootfs_dir):
-                    print "in rootfs"
-                    bin_data = read_file(bin_file, rootfs_dir)
+                if is_file_exist(bin_file, bins_dir):
+                    bin_data = read_file(bin_file, bins_dir)
 
                 if bin_data != None :
                     print off_start, off_end
@@ -246,15 +266,24 @@ if __name__ == '__main__':
             off_start = int(fs_start[0:-1], 10)
             off_end = int(fs_end[0:-1],10)
             execmd(['sudo', 'parted', storage_dev, 'mkpart', 'primary', 'fat32', fs_start, fs_end])
-            mkfs_and_copy_bins(off_start, storage_dev, bin_files, 'vfat', 1)
+            mkfs_and_copy_bins(bins_dir, off_start, storage_dev, bin_files, 'vfat', 1)
             part_index += 1
         elif fstype == "ext4":
             print "ext4"
             off_start = int(fs_start[0:-1], 10)
             off_end = int(fs_end[0:-1],10)
             execmd(['sudo', 'parted', storage_dev, 'mkpart', 'primary', 'ext4', fs_start, fs_end])
-            mkfs_and_copy_bins(off_start, storage_dev, bin_files, 'ext4', 0)
+            mkfs_and_copy_bins(bins_dir, off_start, storage_dev, bin_files, 'ext4', 0)
             part_index += 1
+        elif fstype == "empty":
+            print "empty"
+            off_start = int(fs_start[0:-1], 10)
+            off_end = int(fs_end[0:-1], 10)
+            execmd(['sudo', 'parted', storage_dev, 'mkpart', 'primary', 'fat32', fs_start, fs_end])
+            print "Creating header..."
+            header_bin = create_header(layout_obj)
+            print "Write to dev", storage_dev
+            overwrite_to((1024*1024), header_bin, storage_dev)
         else:
             print "Fstype not supported " + fstype
 

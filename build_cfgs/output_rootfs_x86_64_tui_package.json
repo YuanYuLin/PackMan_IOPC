@@ -4,8 +4,8 @@
 "packages_dir": "packages",
 "envs": 
 [
-{"enabled": 1, "env": {"ARCH_ALT" : "armel"} },
-{"enabled": 1, "env": {"DO_DEBOOTSTRAP" : "N"} },
+{"enabled": 1, "env": {"ARCH_ALT" : "x86_64"} },
+{"enabled": 1, "env": {"DO_DEBOOTSTRAP" : "n"} },
 {"enabled": 1, "env": {"BUILD_JOBS_COUNT" : "3"} },
 {"enabled": 1, "env": {"INSTALL_TEST_UTILS": "n"} },
 {"enabled": 1, "env": {"INSTALL_PLATFORM_DAO": "y"} },
@@ -23,14 +23,14 @@
 },{
   "enabled": 1, 
   "name": "cross_compiler", 
-  "deps": ["arch_arm"],
-  "args": {"version":"iopc_gcc_armel_2017.02.3", "versionOptions":["CodeSourcery-2014.05", "Linaro-2017.01", "iopc_gcc_armel_2017.02.3"]},
+  "deps": ["arch_arm"], 
+  "args": {"version":"iopc_gcc_x86_64_2017.02.3", "versionOptions":[]}, 
   "patch": ""
 },{
   "enabled": 1, 
   "name": "debootstrap", 
   "deps": ["arch_arm"], 
-  "args": {"version":"debian_jessie_armel_minbase.tar.xz", "versionOptions":["debian_jessie_armel.tar.xz", "debian_jessie_armel_minbase.tar.xz", "debian_jessie_armhf.tar.xz"]},
+  "args": {"version":"debian_x86_64_minbase.tar.xz", "versionOptions":[]},
   "patch": ""
 },{
   "enabled": 1, 
@@ -40,7 +40,7 @@
   "patch": ""
 },{
   "enabled": 1, 
-  "name": "platform_iopc_vpb", 
+  "name": "platform_iopc_qemu64", 
   "deps": ["platform_iopc_utils"], 
   "args": {},
   "patch": ""
@@ -234,13 +234,44 @@
   "args": {},
   "patch": ""
 },{
+  "enabled": 0,
+  "name": "libexpat",
+  "deps":["debootstrap"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 0,
+  "name": "libpciaccess",
+  "deps":["cross_compiler"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 0,
+  "name": "libdrm",
+  "deps":["cross_compiler", "libxml2", "libexpat"],
+  "opts":["libpciaccess"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 0,
+  "name": "mesa",
+  "deps":["cross_compiler"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1,
+  "name": "libncurses",
+  "deps":["cross_compiler"],
+  "args": {},
+  "patch": ""
+},{
   "enabled": 1, 
   "name": "samba",
   "deps":["cross_compiler"],
   "args": {},
   "patch": ""
 },{
-  "enabled": 0, 
+  "enabled": 1, 
   "name": "qemu",
   "deps":["cross_compiler", "libz", "libglib", "libpixman", "libxml2"],
   "opts":["mesa", "libsdl2"],
@@ -249,6 +280,12 @@
 },{
   "enabled": 1, 
   "name": "dropbear", 
+  "deps":["cross_compiler"],
+  "args": {},
+  "patch": "COMMON"
+},{
+  "enabled": 0, 
+  "name": "openssh", 
   "deps":["cross_compiler"],
   "args": {},
   "patch": "COMMON"

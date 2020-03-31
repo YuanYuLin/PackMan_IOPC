@@ -23,7 +23,7 @@ def CommitPackage(pkg_enabled, pkg_name, remote_repo_path, local_repo_path):
             checkSize_filelist(local_repo_path)
             exit
             print(chr(27) + "[2J")
-            print "GIT commit [ " + pkg_name + " ]"
+            #print "PKG [ " + pkg_name + " ]"
             version = ops_git.get_version_from_log(local_repo_path)
             major = version[0]
             minor = version[1] + 1
@@ -31,40 +31,51 @@ def CommitPackage(pkg_enabled, pkg_name, remote_repo_path, local_repo_path):
             user_home_path = os.path.expanduser("~")
 
             while True:
+                isGitRepository = True
                 commit_msg = ops_git.get_commit_msg(user_home_path, major, minor, aux)
-                print "=Commit Message==========="
-                print commit_msg
+                #print "=Commit Message==========="
+                #print commit_msg
 
                 status = ops_git.status(local_repo_path)
                 if status :
-                    if len(status) == 3:
-                        if status[2] == 0:
-                            print status[0]
-                        else:
-                            print status[1]
+                    print "PKG: [%s]" % (pkg_name)
                 else:
                     print "Not a git repository!!"
+                    isGitRepository = False
 
                 print "=========================="
 
-                input_answer = raw_input(">>commit([Y]es/[N]o/E[x]it/[E]dit)")
-                if (input_answer == "e"):
-                    CMD=['vi', ops_git.get_commit_msg_file(user_home_path)]
-                    ops.execCmd(CMD, local_repo_path, False, None)
-                    continue
-                if (input_answer == "x"):
-                    print "Exit..."
-                    sys.exit(1)
-                elif (input_answer == "y"):
-                    break
-                elif (input_answer == ""):
-                    continue
-                else:
-                    print "Answer " + input_answer
-                    return
+                if isGitRepository :
+                    if len(status) == 3:
+                        if status[2] == 0:
+                            if status[0].find("nothing to commit") != -1:
+                                break
+                    input_answer = raw_input(">>commit([Y]es/[N]o/E[x]it/[E]dit/[S]Detail)")
+                    if (input_answer == "e"):
+                        CMD=['vi', ops_git.get_commit_msg_file(user_home_path)]
+                        ops.execCmd(CMD, local_repo_path, False, None)
+                        continue
+                    if (input_answer == "s"):
+                        if len(status) == 3:
+                            if status[2] == 0:
+                                print status[0]
+                            else:
+                                print status[1]
+                        continue
+                    elif (input_answer == "x"):
+                        print "Exit..."
+                        sys.exit(1)
+                    elif (input_answer == "y"):
+                        ops_git.commit(local_repo_path, major, minor, aux, commit_msg)
+                        break
+                    elif (input_answer == ""):
+                        continue
+                    else:
+                        print "Answer " + input_answer
+                        return
 
-            ops_git.commit(local_repo_path, major, minor, aux, commit_msg)
-            print "GIT commit END"
+                print "GIT commit END"
+                return
 
 def Main(args):
     account = iopc.getAccount(args)

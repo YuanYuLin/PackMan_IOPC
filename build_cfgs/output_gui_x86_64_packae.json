@@ -4,7 +4,7 @@
 "packages_dir": "packages",
 "envs": 
 [
-{"enabled": 1, "env": {"ARCH_ALT" : "armel"} },
+{"enabled": 1, "env": {"ARCH_ALT" : "x86_64"} },
 {"enabled": 1, "env": {"DO_DEBOOTSTRAP" : "N"} },
 {"enabled": 1, "env": {"BUILD_JOBS_COUNT" : "3"} },
 {"enabled": 1, "env": {"INSTALL_TEST_UTILS": "n"} },
@@ -23,14 +23,14 @@
 },{
   "enabled": 1, 
   "name": "cross_compiler", 
-  "deps": ["arch_arm"],
-  "args": {"version":"iopc_gcc_armel_2017.02.3", "versionOptions":["CodeSourcery-2014.05", "Linaro-2017.01", "iopc_gcc_armel_2017.02.3"]},
+  "deps": ["arch_arm"], 
+  "args": {"version":"iopc_gcc_x86_64_2017.02.3", "versionOptions":[]}, 
   "patch": ""
 },{
   "enabled": 1, 
   "name": "debootstrap", 
   "deps": ["arch_arm"], 
-  "args": {"version":"debian_jessie_armel_minbase.tar.xz", "versionOptions":["debian_jessie_armel.tar.xz", "debian_jessie_armel_minbase.tar.xz", "debian_jessie_armhf.tar.xz"]},
+  "args": {"version":"debian_x86_64_minbase.tar.xz", "versionOptions":[]},
   "patch": ""
 },{
   "enabled": 1, 
@@ -40,7 +40,7 @@
   "patch": ""
 },{
   "enabled": 1, 
-  "name": "platform_iopc_vpb", 
+  "name": "platform_iopc_qemu64", 
   "deps": ["platform_iopc_utils"], 
   "args": {},
   "patch": ""
@@ -240,9 +240,9 @@
   "args": {},
   "patch": ""
 },{
-  "enabled": 0, 
+  "enabled": 1, 
   "name": "qemu",
-  "deps":["cross_compiler", "libz", "libglib", "libpixman", "libxml2"],
+  "deps":["cross_compiler", "libz", "libglib", "libpcre3", "libpixman", "libxml2"],
   "opts":["mesa", "libsdl2"],
   "args": {},
   "patch": "COMMON"
@@ -253,10 +253,161 @@
   "args": {},
   "patch": "COMMON"
 },{
+  "enabled": 1,
+  "name": "libexpat",
+  "deps":["debootstrap"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1,
+  "name": "wayland",
+  "deps":["cross_compiler", "libffi", "libexpat", "libxml2"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1,
+  "name": "wayland_protocols",
+  "deps":["cross_compiler", "libffi", "libexpat", "libxml2"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1,
+  "name": "libpciaccess",
+  "deps":["cross_compiler"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1,
+  "name": "libdrm",
+  "deps":["cross_compiler"],
+  "opts":["libpciaccess"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1,
+  "name": "mtdev",
+  "deps":["cross_compiler"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1,
+  "name": "libudev",
+  "deps":["cross_compiler"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1,
+  "name": "libevdev",
+  "deps":["cross_compiler"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1,
+  "name": "libinput",
+  "deps":["cross_compiler", "mtdev", "libudev", "libevdev"],
+  "args": {},
+  "patch": "COMMON"
+},{
+  "enabled": 1,
+  "name": "libxkbcommon",
+  "deps":["cross_compiler", "wayland", "wayland_protocols"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1,
+  "name": "libpng",
+  "deps":["cross_compiler"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1,
+  "name": "libjpeg",
+  "deps":["cross_compiler"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1,
+  "name": "libpixman",
+  "deps":["cross_compiler"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1,
+  "name": "libpcre3",
+  "deps":["debootstrap"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1,
+  "name": "libglib",
+  "deps":["cross_compiler", "libpcre3"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1,
+  "name": "mesa",
+  "deps":["cross_compiler"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1,
+  "name": "freetype",
+  "deps":["cross_compiler"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1,
+  "name": "libuuid",
+  "deps":["debootstrap"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1,
+  "name": "liblua",
+  "deps":["debootstrap"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1,
+  "name": "libdbus",
+  "deps":["debootstrap"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1,
+  "name": "fontconfig",
+  "deps":["cross_compiler", "freetype", "libuuid"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1,
+  "name": "libcairo",
+  "deps":["cross_compiler", "mesa", "libpixman", "libpng", "libglib", "libdrm", "fontconfig"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1,
+  "name": "weston",
+  "deps":["cross_compiler", "libdrm", "libinput", "libxkbcommon", "libcairo", "mesa"],
+  "args": {},
+  "patch": "COMMON"
+},{
+  "enabled": 1,
+  "name": "efl",
+  "deps":["cross_compiler", "wayland", "libjpeg", "liblua", "libdbus"],
+  "args": {},
+  "patch": "COMMON"
+},{
   "enabled": 1, 
   "name": "iopctest", 
   "deps":["cross_compiler"],
   "ops":["libiopcrfb", "libiopcdrm"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1, 
+  "name": "wayland_client_test", 
+  "deps":["cross_compiler", "wayland"],
   "args": {},
   "patch": ""
 },{

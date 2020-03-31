@@ -7,6 +7,8 @@
 {"enabled": 1, "env": {"ARCH_ALT" : "armel"} },
 {"enabled": 1, "env": {"DO_DEBOOTSTRAP" : "N"} },
 {"enabled": 1, "env": {"BUILD_JOBS_COUNT" : "3"} },
+{"enabled": 1, "env": {"INSTALL_TEST_UTILS": "n"} },
+{"enabled": 1, "env": {"INSTALL_PLATFORM_DAO": "n"} },
 {"enabled": 0, "env": {"" : ""} }
 ],
 "packages": 
@@ -24,8 +26,8 @@
   "conflic": [], "args": {},
   "patch": ""
 },{
-  "enabled": 1, "name": "uboot", "deps": ["cross_compiler"], 
-  "conflic": [], "args": {"version":"armel_raspi2"},
+  "enabled": 0, "name": "uboot", "deps": ["cross_compiler"], 
+  "conflic": [], "args": {"version":"armel_raspi3"},
   "patch": ""
 },{
   "enabled": 1, "name": "busybox", "deps": ["cross_compiler"], 
@@ -53,6 +55,18 @@
   "patch": "IOPC_RPI3_4.1.42"
 },{
   "enabled": 1, "name": "linux_modules_hello", "deps": ["cross_compiler", "linux"], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "linux_modules_core_gpio", "deps": ["cross_compiler", "linux"], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "linux_modules_hw_gpio_dummy", "deps": ["cross_compiler", "linux", "linux_modules_core_gpio"], 
+  "conflic": [], "args": {},
+  "patch": ""
+},{
+  "enabled": 1, "name": "linux_modules_inputs", "deps": ["cross_compiler", "linux"], 
   "conflic": [], "args": {},
   "patch": ""
 },{

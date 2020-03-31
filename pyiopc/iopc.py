@@ -108,6 +108,26 @@ def make_web(workspace, materials_dir, menu_file, food_dir, debug=False):
         print res[1]
         sys.exit(1)
 
+def waf(workspace, extrac_config=None, env_config=None, debug=False):
+    CMD=[]
+    if (debug and env_config):
+        for env in env_config:
+            CMD.append(env + '="' + env_config[env] + '"')
+
+    CMD.append('./buildtools/bin/waf')
+
+    if extrac_config:
+        for cfg in extrac_config:
+            CMD.append(cfg)
+
+    res = ops.execCmd(CMD, workspace, debug, None, env_config=env_config)
+    if debug:
+        return 0
+
+    if res[2] != 0:
+        print res[1]
+        sys.exit(1)
+
 def configure(workspace, extrac_config=None, env_config=None, debug=False):
 
     CMD=[]
@@ -406,4 +426,32 @@ def add_selected_package(pkg_name):
         supported_pkgs = ""
 
     ops.exportEnv(ops.setEnv("SUPPORTED_PKGS", supported_pkgs + ":" + pkg_name + ":"))
+
+def get_includes():
+    old_includes = ""
+    try:
+        old_includes = ops.getEnv("IOPC_ENV_INCLUDES")
+    except:
+        old_includes = ""
+    return old_includes
+
+def add_includes(new_includes):
+    old_includes = get_includes()
+
+    includes = old_includes + " " + new_includes
+    ops.exportEnv(ops.setEnv("IOPC_ENV_INCLUDES", includes))
+
+def get_libs():
+    old_libs = ""
+    try:
+        old_libs = ops.getEnv("IOPC_ENV_LIBS")
+    except:
+        old_libs = ""
+    return old_libs
+
+def add_libs(new_libs):
+    old_libs = get_libs()
+
+    libs = old_libs + " " + new_libs
+    ops.exportEnv(ops.setEnv("IOPC_ENV_LIBS", libs))
 

@@ -5,15 +5,15 @@ import ops
 
 def buildModule(pkg_enabled, pkg_name, pkg_args, local_repo_path, output_path):
     if pkg_enabled == 1:
-        print "===Build===[" + pkg_name + "]"
+        print "===SDK Env===[" + pkg_name + "]"
         ops.mkdir(output_path)
         if(os.path.exists(local_repo_path)):
             build_pkg = None
             build_pkg = ops.loadModule(pkg_name, iopc.PACKAGE_CFG, [local_repo_path])
             args = {"pkg_name": pkg_name, "pkg_path": local_repo_path, "output_path": output_path, "pkg_args": pkg_args}
-            stamp_file = output_path + os.sep + "STAMP.BUILD"
+            stamp_file = output_path + os.sep + "STAMP.SDKENV"
             if not os.path.exists(stamp_file):
-                if build_pkg.MAIN_BUILD(args):
+                if build_pkg.MAIN_SDKENV(args):
                     ops.touch(stamp_file)
         else:
             print local_repo_path + " Not exist!"

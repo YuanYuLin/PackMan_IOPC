@@ -34,8 +34,14 @@
   "patch": ""
 },{
   "enabled": 1, 
-  "name": "platform_iopc_qemu64", 
+  "name": "platform_iopc_utils", 
   "deps": ["arch_arm"], 
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1, 
+  "name": "platform_iopc_qemu64", 
+  "deps": ["platform_iopc_utils"], 
   "args": {},
   "patch": ""
 },{
@@ -47,6 +53,12 @@
 },{
   "enabled": 1, 
   "name": "e2fsprogs", 
+  "deps": ["cross_compiler"], 
+  "args": {},
+  "patch": "COMMON"
+},{
+  "enabled": 1, 
+  "name": "btrfsprogs", 
   "deps": ["cross_compiler"], 
   "args": {},
   "patch": "COMMON"
@@ -184,12 +196,6 @@
   "patch": ""
 },{
   "enabled": 1, 
-  "name": "libiopcrfb", 
-  "deps":["cross_compiler"],
-  "args": {},
-  "patch": ""
-},{
-  "enabled": 1, 
   "name": "libiopccmd", 
   "deps":["cross_compiler", "libiopcmisc", "libiopcdao", "libiopcnet"],
   "opts":["lxc", "libiopcrfb"],
@@ -199,31 +205,6 @@
   "enabled": 1,
   "name": "libxml2",
   "deps":["cross_compiler"],
-  "args": {},
-  "patch": ""
-},{
-  "enabled": 1,
-  "name": "libexpat",
-  "deps":["debootstrap"],
-  "args": {},
-  "patch": ""
-},{
-  "enabled": 1, 
-  "name": "libpciaccess", 
-  "deps":["cross_compiler"],
-  "args": {},
-  "patch": ""
-},{
-  "enabled": 1, 
-  "name": "libdrm", 
-  "deps":["cross_compiler", "libxml2", "libexpat"],
-  "opts":["libpciaccess"],
-  "args": {},
-  "patch": ""
-},{
-  "enabled": 1, 
-  "name": "libiopcdrm", 
-  "deps":["cross_compiler", "libdrm"],
   "args": {},
   "patch": ""
 },{
@@ -254,8 +235,21 @@
   "patch": ""
 },{
   "enabled": 1, 
+  "name": "samba",
+  "deps":["cross_compiler"],
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1, 
   "name": "qemu",
-  "deps":["cross_compiler", "libz", "libglib", "libpcre3", "libpixman", "libxml2"],
+  "deps":["cross_compiler", "libz", "libglib", "libpixman", "libxml2"],
+  "opts":["mesa", "libsdl2"],
+  "args": {},
+  "patch": "COMMON"
+},{
+  "enabled": 1, 
+  "name": "dropbear", 
+  "deps":["cross_compiler"],
   "args": {},
   "patch": "COMMON"
 },{
@@ -274,6 +268,12 @@
 },{
   "enabled": 1, 
   "name": "image_squashfs", 
+  "deps": ["arch_arm"], 
+  "args": {},
+  "patch": ""
+},{
+  "enabled": 1, 
+  "name": "image_dao_squashfs", 
   "deps": ["arch_arm"], 
   "args": {},
   "patch": ""
